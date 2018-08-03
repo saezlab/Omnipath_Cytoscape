@@ -1,8 +1,14 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
+
+
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import org.cytoscape.app.swing.CySwingAppAdapter;
+import org.cytoscape.application.CyApplicationManager;
+
+
+
 public class LoadDataOptions {
 
 
@@ -10,15 +16,17 @@ public class LoadDataOptions {
 	private String database;
 	private String organism;
 	private CySwingAppAdapter adapter;
+	private CyApplicationManager applicationManager;
 
 	public LoadDataOptions() {}
 	
 	
-	public void getDatabse(String database, String organism, CySwingAppAdapter adapter) throws IOException{
+	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, CyApplicationManager applicationManager) throws IOException, InterruptedException {
 		
 		this.adapter = adapter;
 		this.organism = organism;
 		this.database = database;
+		this.applicationManager = applicationManager;
 		
 		
 		//start query formulation for interactions or ptms 
@@ -77,9 +85,11 @@ public class LoadDataOptions {
             		"Error Message", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		// else create task to send the query 
+		// else create task to execute the query 
+		// and plot the network in Cytoscape
 		else {
-			SendQueryTaskFactory queryTaskFactory = new SendQueryTaskFactory(query, adapter, database, organism);
+			
+			SendQueryTaskFactory queryTaskFactory = new SendQueryTaskFactory(query, adapter, database, organism, applicationManager);	
 			adapter.getTaskManager().execute(queryTaskFactory.createTaskIterator());
 			
 		}
@@ -87,6 +97,5 @@ public class LoadDataOptions {
 		
 	}
 	
-
 	
 }

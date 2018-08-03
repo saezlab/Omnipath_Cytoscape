@@ -9,13 +9,15 @@ import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.application.swing.CytoPanelState;
 
 
+
+
+
 public class ControlPanelAction extends AbstractCyAction {
 
 	private static final long serialVersionUID = 1L;
 	private CySwingApplication desktopApp;
 	private final CytoPanel cytoPanelWest;
 	private MyControlPanel myControlPanel;
-	
 	
 	
 	public ControlPanelAction(CySwingApplication desktopApp,
@@ -28,7 +30,7 @@ public class ControlPanelAction extends AbstractCyAction {
 
 		this.desktopApp = desktopApp;
 	
-		//Note: myControlPanel is bean we defined and registered as a service
+		// myControlPanel is bean we defined and registered as a service
 		this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
 		this.myControlPanel = myCytoPanel;
 		

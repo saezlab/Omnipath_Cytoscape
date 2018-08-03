@@ -4,14 +4,17 @@ Bundle-Name: Omnipath
 Bundle-Version: 1.0
 Built-By: francescoceccarelli
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1531834609706
+Bnd-LastModified: 1533301121000
 Bundle-Activator: Germany.RWTH.JRCCombine.internal.Omnipath.CyActivato
  r
-Import-Package: javax.swing,javax.swing.border,org.cytoscape.app.swing
- ;version="[3.1,4)",org.cytoscape.application.swing;version="[3.1,4)",
- org.cytoscape.service.util;version="[3.1,4)",org.cytoscape.task.read;
- version="[3.1,4)",org.cytoscape.work;version="[3.1,4)",org.osgi.frame
- work;version="[1.5,2)"
+Import-Package: javax.swing,javax.swing.border,javax.swing.filechooser
+ ,org.cytoscape.app.swing;version="[3.1,4)",org.cytoscape.application;
+ version="[3.1,4)",org.cytoscape.application.swing;version="[3.1,4)",o
+ rg.cytoscape.model;version="[3.1,4)",org.cytoscape.service.util;versi
+ on="[3.1,4)",org.cytoscape.task.create;version="[3.1,4)",org.cytoscap
+ e.task.read;version="[3.1,4)",org.cytoscape.task.select;version="[3.1
+ ,4)",org.cytoscape.work;version="[3.1,4)",org.osgi.framework;version=
+ "[1.5,2)"
 Created-By: Apache Maven Bundle Plugin
 Tool: Bnd-1.15.0
 Build-Jdk: 1.8.0_144
