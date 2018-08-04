@@ -54,7 +54,6 @@ public class CyActivator extends AbstractCyActivator {
 	public static CySwingAppAdapter getAdapter() {return adapter;}
 	public static CyApplicationManager getCyApplicationManager() {return applicationManager;}
 	
-	
 }
 
 

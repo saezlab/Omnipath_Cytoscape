@@ -4,7 +4,7 @@ Bundle-Name: Omnipath
 Bundle-Version: 1.0
 Built-By: francescoceccarelli
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1533301121000
+Bnd-LastModified: 1533371946156
 Bundle-Activator: Germany.RWTH.JRCCombine.internal.Omnipath.CyActivato
  r
 Import-Package: javax.swing,javax.swing.border,javax.swing.filechooser

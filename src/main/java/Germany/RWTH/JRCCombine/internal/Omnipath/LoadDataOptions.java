@@ -17,16 +17,19 @@ public class LoadDataOptions {
 	private String organism;
 	private CySwingAppAdapter adapter;
 	private CyApplicationManager applicationManager;
+	private Object[] selected;
 
 	public LoadDataOptions() {}
 	
 	
-	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, CyApplicationManager applicationManager) throws IOException, InterruptedException {
+	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, CyApplicationManager applicationManager,
+			Object[] selected) throws IOException, InterruptedException {
 		
 		this.adapter = adapter;
 		this.organism = organism;
 		this.database = database;
 		this.applicationManager = applicationManager;
+		this.selected = selected;
 		
 		
 		//start query formulation for interactions or ptms 
@@ -71,7 +74,16 @@ public class LoadDataOptions {
 		// if human then do not add extra fields to the query 
 		else {}
 		
+		// add database selected
+		query = query + "&databases=";
+		for (int i = 0; i< selected.length; i++) {
+			if (i == 0)
+				query = query +selected[i].toString();
+			else 
+				query = query + ","+selected[i].toString();
+		}
 		
+		//JOptionPane.showMessageDialog(null, query);
 		
 		// remove all spaces from the query
 		// in case there are any 

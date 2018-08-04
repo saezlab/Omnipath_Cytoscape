@@ -75,8 +75,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		lbXYZ.setBorder(new EmptyBorder(20, 20, 20, 20));
 		GridBagLayout layout = new GridBagLayout();
 		layout.columnWidths = new int[]{100, 110, 110};
-		setSize(new Dimension(600, 600));
-		setPreferredSize(new Dimension(600, 600));
+		setSize(new Dimension(620, 620));
+		setPreferredSize(new Dimension(620, 620));
 		lbXYZ.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel website = new JLabel();
 		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
@@ -141,8 +141,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         option2.addActionListener(actionListener);
         option3.addActionListener(actionListener);
         
-        
-		
 		
 	}
 	
@@ -174,8 +172,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
 		add(bookList);
 		
-		
-		
 	}
 	
 	
@@ -198,85 +194,11 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         });
     }
 	
-public void createDatasets() {
-	
-		
-		JRadioButton option1 = new JRadioButton("TRIP");
-        JRadioButton option2 = new JRadioButton("BioGRID");
-        JRadioButton option3 = new JRadioButton("HPRD");
-        JRadioButton option4 = new JRadioButton("MIMP");
-        JRadioButton option5 = new JRadioButton("PhosphoSite");
-        JRadioButton option6 = new JRadioButton("PhosphoSite_dir");
-        JRadioButton option7 = new JRadioButton("LMPID");
-        JRadioButton option8 = new JRadioButton("DIP");
-        JRadioButton option9 = new JRadioButton("IntAct");
-        JRadioButton option10 = new JRadioButton("SPIKE");
-        JRadioButton option11 = new JRadioButton("ELM");
-        JRadioButton option12 = new JRadioButton("Signor");
-        JRadioButton option13 = new JRadioButton("phosphoELM");
-        JRadioButton option14 = new JRadioButton("InnateDB");
-        JRadioButton option15 = new JRadioButton("SignaLink3");
-        JRadioButton option16 = new JRadioButton("MPPI");
-        JRadioButton option17 = new JRadioButton("PDZBase");
-        JRadioButton option18 = new JRadioButton("PhosphoSite_noref");
-        JRadioButton option19 = new JRadioButton("CA1");
-        JRadioButton option20 = new JRadioButton("PhosphoNetworks");
-        
-        ButtonGroup group = new ButtonGroup();
-        group.add(option1);
-        group.add(option2);
-        group.add(option3);
-        group.add(option4);
-        group.add(option5);
-        group.add(option6);
-        group.add(option7);
-        group.add(option8);
-        group.add(option9);
-        group.add(option10);
-        group.add(option11);
-        group.add(option12);
-        group.add(option13);
-        group.add(option14);
-        group.add(option15);
-        group.add(option16);
-        group.add(option17);
-        group.add(option18);
-        group.add(option19);
-        group.add(option20);
-   
- 
-        add(option1);
-        add(option2);
-        add(option3);
-        add(option4);
-        add(option5);
-        add(option6);
-        add(option7);
-        add(option8);
-        add(option9);
-        add(option10);
-        add(option11);
-        add(option12);
-        add(option13);
-        add(option14);
-        add(option15);
-        add(option16);
-        add(option17);
-        add(option18);
-        add(option19);
-        add(option20);
-       
-		
-	}
-
-
 	public void createSelectionTable() {
-		
 		
 	    dual = new DualListBox();
 	    dual.addSourceElements(new String[] { "Complete selection" });
 	    dual.addDestinationElements((new String[] { "Complete selection" }));
-	    
 	    add(dual);
 	    
 		
@@ -427,7 +349,6 @@ public void createDatasets() {
 				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 
 						"PhosphoSite",
@@ -445,7 +366,6 @@ public void createDatasets() {
 				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 
 						"PhosphoSite",
@@ -461,7 +381,6 @@ public void createDatasets() {
 				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 						
 						"HTRIdb",
@@ -483,9 +402,9 @@ public void createDatasets() {
 						"fantom4"});
 			}
 			else if (database.equals("TF-target interactions") && organism.equals("Mouse")) {
+				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 						
 						"HTRIdb",
@@ -511,7 +430,6 @@ public void createDatasets() {
 				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 						
 						"kegg",
@@ -538,7 +456,6 @@ public void createDatasets() {
 				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
-				
 				dual.addSourceElements(new String[] {
 						
 						"miR2Disease",
@@ -556,9 +473,6 @@ public void createDatasets() {
 				dual.disableAddButton();
 				dual.disableRemoveButton();
 				dual.disableSelectionButtons();
-				//JOptionPane.showMessageDialog(null, "miRNA are provided only for Humans. Please change selected organism to human or select a new database.",
-	            //		"Error Message", JOptionPane.ERROR_MESSAGE);
-				
 				
 			}
 			
@@ -596,7 +510,21 @@ public void createDatasets() {
                         		"Error Message", JOptionPane.ERROR_MESSAGE);
 						
 					}
-					else loader.getDatabse(database, organism, adapter, applicationManager);
+					else if (dual.getDestList().getModel().getSize() == 0) {
+						
+						JOptionPane.showMessageDialog(null, "Please select the datasets you want to query!",
+                        		"Error Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						// read user choices 
+						Object selections[] = new Object[dual.getDestList().getModel().getSize()];
+						for(int i=0; i < dual.getDestList().getModel().getSize(); i++){
+							
+							selections[i] =  dual.getDestList().getModel().getElementAt(i);  
+						}
+						
+						loader.getDatabse(database, organism, adapter, applicationManager, selections);
+					}
 		    		
 				} catch (IOException e1) {
 					

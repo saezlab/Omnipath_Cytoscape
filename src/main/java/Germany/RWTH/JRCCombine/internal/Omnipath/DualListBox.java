@@ -73,10 +73,15 @@ public class DualListBox extends JPanel {
 	  public DualListBox() {
 	    initScreen();
 	  }
+	  public JList getSourceList() {
+		  return sourceList;
+	  }
+	  public JList getDestList() {
+		  return destList;
+	  }
 	  public void enableAddButton() {
 		  addButton.setEnabled(TRUE);
 	  }
-	  
 	  public void enableRemoveButton() {
 		  removeButton.setEnabled(TRUE);
 	  }
@@ -87,10 +92,7 @@ public class DualListBox extends JPanel {
 	  public void disableSelectionButtons() {
 		  selectAll.setEnabled(FALSE);
 		  deselectAll.setEnabled(FALSE);
-		  
 	  }
-	  
-	  
 	  public void disableAddButton() {
 		  addButton.setEnabled(FALSE);
 	  }
