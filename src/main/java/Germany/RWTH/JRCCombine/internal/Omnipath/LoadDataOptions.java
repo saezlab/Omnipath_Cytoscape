@@ -3,6 +3,7 @@ package Germany.RWTH.JRCCombine.internal.Omnipath;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
@@ -18,18 +19,24 @@ public class LoadDataOptions {
 	private CySwingAppAdapter adapter;
 	private CyApplicationManager applicationManager;
 	private Object[] selected;
+	private ArrayList<String> selectedConfidence;
+	private boolean isTF;
 
 	public LoadDataOptions() {}
 	
 	
-	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, CyApplicationManager applicationManager,
-			Object[] selected) throws IOException, InterruptedException {
+	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, 
+						   CyApplicationManager applicationManager,
+						   Object[] selected, ArrayList<String> selectedConfidence, boolean isTF) 
+						   throws IOException, InterruptedException {
 		
 		this.adapter = adapter;
 		this.organism = organism;
 		this.database = database;
 		this.applicationManager = applicationManager;
 		this.selected = selected;
+		this.selectedConfidence = selectedConfidence;
+		this.isTF = isTF;
 		
 		
 		//start query formulation for interactions or ptms 
@@ -58,7 +65,6 @@ public class LoadDataOptions {
 			
 		}
 		
-		
 		//start query formulation for organism type
 		if (organism.equals("Mouse")) {
 			
@@ -77,19 +83,35 @@ public class LoadDataOptions {
 		// add database selected
 		query = query + "&databases=";
 		for (int i = 0; i< selected.length; i++) {
+			
 			if (i == 0)
 				query = query +selected[i].toString();
 			else 
 				query = query + ","+selected[i].toString();
+			
 		}
 		
-		//JOptionPane.showMessageDialog(null, query);
+		
+		// if TF interactions, add the confidence levels 
+		if (isTF) {
+			query = query + "&tfregulons_levels=";
+			for (int i = 0; i< selectedConfidence.size(); i++) {
+				
+				if (i == 0)
+					query = query +selectedConfidence.get(i).toString();
+				else 
+					query = query + ","+selectedConfidence.get(i).toString();
+				
+			}
+		}
+		
 		
 		// remove all spaces from the query
 		// in case there are any 
 		query = query.replaceAll("\\s+","");
 			
 		//JOptionPane.showMessageDialog(null, query);
+		
 		//check for wrong user selection 
 		if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
 			

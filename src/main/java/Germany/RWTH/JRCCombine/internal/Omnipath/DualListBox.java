@@ -1,7 +1,6 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,13 +12,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
 
@@ -73,26 +70,33 @@ public class DualListBox extends JPanel {
 	  public DualListBox() {
 	    initScreen();
 	  }
+	  
 	  public JList getSourceList() {
 		  return sourceList;
 	  }
+	  
 	  public JList getDestList() {
 		  return destList;
 	  }
+	  
 	  public void enableAddButton() {
 		  addButton.setEnabled(TRUE);
 	  }
+	  
 	  public void enableRemoveButton() {
 		  removeButton.setEnabled(TRUE);
 	  }
+	  
 	  public void enableSelectionButtons() {
 		  selectAll.setEnabled(TRUE);
 		  deselectAll.setEnabled(TRUE);
 	  }
+	  
 	  public void disableSelectionButtons() {
 		  selectAll.setEnabled(FALSE);
 		  deselectAll.setEnabled(FALSE);
 	  }
+	  
 	  public void disableAddButton() {
 		  addButton.setEnabled(FALSE);
 	  }
@@ -156,7 +160,7 @@ public class DualListBox extends JPanel {
 	  public void setDestinationElements(Object newValue[]) {
 		    clearDestinationListModel();
 		    addDestinationElements(newValue);
-		  }
+	  }
 
 	  public void addDestinationElements(Object newValue[]) {
 	    fillListModel(destListModel, newValue);
@@ -317,28 +321,11 @@ public class DualListBox extends JPanel {
 
 	    addButton.setEnabled(FALSE);
 	    removeButton.setEnabled(FALSE);
-	    
 	    selectAll.setEnabled(FALSE);
 	    deselectAll.setEnabled(FALSE);
 	    
-	    
-//	    sourceList.addMouseListener(new MouseAdapter() {
-//	          @Override
-//	          public void mouseExited(MouseEvent e) {
-//			        JList list = (JList) e.getSource();
-//			        list.clearSelection();
-//			    }
-//			});
-//	    
-//	    destList.addMouseListener(new MouseAdapter() {
-//	          @Override
-//	          public void mouseExited(MouseEvent e) {
-//			        JList list = (JList) e.getSource();
-//			        list.clearSelection();
-//			    }
-//			});
-	    
 	  }
+	
 	  
 	  
 	  
@@ -383,7 +370,7 @@ private class selectActionListener implements ActionListener {
 			
 		    
 		    }
-		  }
+	}
 
 private class deselectActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
@@ -399,7 +386,7 @@ private class deselectActionListener implements ActionListener {
 				clearDestinationListModel();
 			}
 		    
-		  }
+	}
 
 
 }

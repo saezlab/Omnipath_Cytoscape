@@ -31,7 +31,12 @@ public class StartRServeTaskObservable implements TaskObserver {
 	public void taskFinished(ObservableTask task){
 		// Once the network has been imported 
 		// add the gene names 
-		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//JOptionPane.showMessageDialog(null, "RUNNING...");
 		CyApplicationManager applicationManager = CyActivator.getCyApplicationManager();
 		//CySwingAppAdapter adapter = CyActivator.getAdapter();
@@ -98,21 +103,21 @@ public class StartRServeTaskObservable implements TaskObserver {
 			
 		}
 		
-		
 		CyNetwork network = applicationManager.getCurrentNetwork();	
 		ArrayList<CyNode> list = (ArrayList<CyNode>) network.getNodeList();
+//		JOptionPane.showMessageDialog(null, list.size());
+//		JOptionPane.showMessageDialog(null, dictionary.size());
 		
 		if (network.getDefaultNodeTable().getColumn("gene_symbol") == null) {
-			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, true);
-			//JOptionPane.showMessageDialog(null, "null");
+			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
 			
 		}
 		
-//		else {
-//			network.getDefaultNodeTable().deleteColumn("gene_symbol");
-//			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, true);
-//			//JOptionPane.showMessageDialog(null, "It exists!");
-//		}
+		else {
+			network.getDefaultNodeTable().deleteColumn("gene_symbol");
+			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
+			//JOptionPane.showMessageDialog(null, "It exists!");
+		}
 		      
 		
 		for (CyNode n : list) {

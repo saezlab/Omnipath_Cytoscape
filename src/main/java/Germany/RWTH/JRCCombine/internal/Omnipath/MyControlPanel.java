@@ -1,47 +1,37 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.task.create.NewNetworkSelectedNodesOnlyTaskFactory;
-import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
 import org.cytoscape.task.select.SelectFromFileListTaskFactory;
-import org.omg.CORBA.portable.InputStream;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -62,6 +52,17 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JButton subnetSelector;
 	private CyApplicationManager applicationManager;
 	private DualListBox dual;
+	private JRadioButton ConfidenceA;
+	private JRadioButton ConfidenceB;
+	private JRadioButton ConfidenceC;
+	private JRadioButton ConfidenceD;
+	private JRadioButton ConfidenceE;
+	private JRadioButton ConfidenceAll;
+	private ArrayList<String> selectedConfidence = new ArrayList<String>();
+	private boolean isTF = false;
+	
+	
+	
 	
 	// set up GUI control panel
 	public MyControlPanel(CySwingAppAdapter adapter, CyApplicationManager applicationManager) {
@@ -75,8 +76,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		lbXYZ.setBorder(new EmptyBorder(20, 20, 20, 20));
 		GridBagLayout layout = new GridBagLayout();
 		layout.columnWidths = new int[]{100, 110, 110};
-		setSize(new Dimension(620, 620));
-		setPreferredSize(new Dimension(620, 620));
+		setSize(new Dimension(640, 640));
+		setPreferredSize(new Dimension(640, 640));
 		lbXYZ.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel website = new JLabel();
 		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
@@ -91,10 +92,12 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		// and organisms
 		createOrganismselection();
 		createDatabaseselection();
+		createTFregulonConfidenceButtons();
 		createSelectionTable();
 		createConfirmationButton();
 		
 		
+		//createConfidenceLevelButtons();
 		//createDatasets();
 		//createSubnetworkSelectorFromFile(this);
 	}
@@ -125,13 +128,13 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
                     if(radioButton.isSelected()){
                     	organism = radioButton.getText();
                     	
-                    if (!organism.equals("") && !database.equals("")) {
-        		    		database = (String) bookList.getSelectedItem();
-        			    	dual.enableAddButton();
-        					dual.enableRemoveButton();
-        					dual.enableSelectionButtons();
-        					updateList();
-        		    }
+	                    if (!organism.equals("") && !database.equals("")) {
+	        		    		database = (String) bookList.getSelectedItem();
+	        			    	dual.enableAddButton();
+	        					dual.enableRemoveButton();
+	        					dual.enableSelectionButtons();
+	        					updateList();
+	        		    }
                     	
                     }
                 }
@@ -144,6 +147,111 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	}
 	
+  public void createTFregulonConfidenceButtons() {
+		
+	  
+	  	JLabel l = new JLabel("TF confidence:");
+		add(l);
+		l.setBorder(new EmptyBorder(0, 5, 0, 0));
+	  	ConfidenceA = new JRadioButton("A");
+	    ConfidenceB = new JRadioButton("B");
+	    ConfidenceC = new JRadioButton("C");
+	    ConfidenceD = new JRadioButton("D");
+	    ConfidenceE = new JRadioButton("E");
+	    ConfidenceAll = new JRadioButton("All");
+	    
+	    add(ConfidenceA);
+        add(ConfidenceB);
+        add(ConfidenceC);
+        add(ConfidenceD);
+        add(ConfidenceE);
+        add(ConfidenceAll);
+        
+        
+        ConfidenceA.setEnabled(false);
+        ConfidenceB.setEnabled(false);    
+        ConfidenceC.setEnabled(false);    
+        ConfidenceD.setEnabled(false);    
+        ConfidenceE.setEnabled(false);    
+        ConfidenceAll.setEnabled(false);    
+        
+        ConfidenceAll.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceA.setSelected(false);
+		    	ConfidenceB.setSelected(false);
+		    	ConfidenceC.setSelected(false);
+		    	ConfidenceD.setSelected(false);
+		    	ConfidenceE.setSelected(false);
+		    	
+		    }
+		});
+        
+        ConfidenceA.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceAll.setSelected(false);
+		    	
+		    }
+		});
+        
+        ConfidenceB.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceAll.setSelected(false);
+		    	
+		    }
+		});
+        
+        ConfidenceC.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceAll.setSelected(false);
+		    	
+		    }
+		});
+        
+        ConfidenceD.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceAll.setSelected(false);
+		    	
+		    }
+		});
+        
+        ConfidenceE.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	ConfidenceAll.setSelected(false);
+		    	
+		    }
+		});
+        
+	  }
+  
+  	public void enableTFConfidence() {
+  		
+  		ConfidenceA.setEnabled(true);
+        ConfidenceB.setEnabled(true);    
+        ConfidenceC.setEnabled(true);    
+        ConfidenceD.setEnabled(true);    
+        ConfidenceE.setEnabled(true);    
+        ConfidenceAll.setEnabled(true);    
+  		
+  	}
+  	
+  	public void disableTFConfidence() {
+  		
+  		ConfidenceA.setEnabled(false);
+        ConfidenceB.setEnabled(false);    
+        ConfidenceC.setEnabled(false);    
+        ConfidenceD.setEnabled(false);    
+        ConfidenceE.setEnabled(false);    
+        ConfidenceAll.setEnabled(false);    
+  		
+  	}
+  	
+  	
 	
 	public void createDatabaseselection() {
 
@@ -159,21 +267,26 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		// implicit action listener 
 		bookList.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
-		    	if (!organism.equals("") && !database.equals("")) {
-		    		database = (String) bookList.getSelectedItem();
+		    	database = (String) bookList.getSelectedItem();
+		    	if (database.equals("TF-target interactions")) {
+	    			
+	    			enableTFConfidence();
+	    			
+	    		} else disableTFConfidence();
+		    	
+		    	if (!organism.equals("")) {
+		    		
 			    	dual.enableAddButton();
 					dual.enableRemoveButton();
 					dual.enableSelectionButtons();
 					updateList();
 		    	}
-		    	
 		    }
 		});
 
 		add(bookList);
 		
 	}
-	
 	
 	
 	// interactive link to get Omnipath information from the control panel 
@@ -466,7 +579,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 			
 			else if (database.equals("miRNA-mRNA") && (organism.equals("Rat") || organism.equals("Mouse"))) {
 				
-				
 				dual.clearDestinationListModel();
 				dual.clearSourceListModel();
 				dual.addSourceElements((new String[] {"0 resources"}));
@@ -515,15 +627,52 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						JOptionPane.showMessageDialog(null, "Please select the datasets you want to query!",
                         		"Error Message", JOptionPane.ERROR_MESSAGE);
 					}
+					else if ((!ConfidenceA.isSelected() && !ConfidenceB.isSelected() && !ConfidenceA.isSelected()
+							&& !ConfidenceC.isSelected() && !ConfidenceD.isSelected() &&
+							!ConfidenceE.isSelected() && !ConfidenceAll.isSelected()) && database.equals("TF-target interactions")) {
+						
+						JOptionPane.showMessageDialog(null, "Please select regulons confidence level to proceed!",
+                        		"Error Message", JOptionPane.ERROR_MESSAGE);
+						
+					}
 					else {
 						// read user choices 
+						if (database.equals("TF-target interactions")) isTF = true;
+						else  isTF = false;
 						Object selections[] = new Object[dual.getDestList().getModel().getSize()];
 						for(int i=0; i < dual.getDestList().getModel().getSize(); i++){
 							
 							selections[i] =  dual.getDestList().getModel().getElementAt(i);  
 						}
 						
-						loader.getDatabse(database, organism, adapter, applicationManager, selections);
+						if (database.equals("TF-target interactions")) {
+							selectedConfidence = new ArrayList<String>();
+							if (ConfidenceA.isSelected()) {
+								selectedConfidence.add("A");
+							}
+							if (ConfidenceB.isSelected()) {
+								selectedConfidence.add("B");
+							}
+							if (ConfidenceC.isSelected()) {
+								selectedConfidence.add("C");
+							}
+							if (ConfidenceD.isSelected()) {
+								selectedConfidence.add("D");
+							}
+							if (ConfidenceE.isSelected()) {
+								selectedConfidence.add("E");
+							}
+							if (ConfidenceAll.isSelected()) {
+								selectedConfidence.add("A");
+								selectedConfidence.add("B");
+								selectedConfidence.add("C");
+								selectedConfidence.add("D");
+								selectedConfidence.add("E");
+							}
+						}
+						//JOptionPane.showMessageDialog(null, selectedConfidence);
+						loader.getDatabse(database, organism, adapter, applicationManager, selections,
+								selectedConfidence, isTF);
 					}
 		    		
 				} catch (IOException e1) {
