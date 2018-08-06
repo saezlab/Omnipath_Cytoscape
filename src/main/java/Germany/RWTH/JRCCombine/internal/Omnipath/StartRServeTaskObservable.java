@@ -10,10 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
-
-import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
@@ -31,6 +27,7 @@ public class StartRServeTaskObservable implements TaskObserver {
 	public void taskFinished(ObservableTask task){
 		// Once the network has been imported 
 		// add the gene names 
+		// wait 3 secs to be sure the network import is completed 
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e1) {
@@ -42,8 +39,7 @@ public class StartRServeTaskObservable implements TaskObserver {
 		//CySwingAppAdapter adapter = CyActivator.getAdapter();
 		FileName singleFile = FileName.getInstance();
 		String filename = singleFile.s;
-//		AddGeneNameTaskFactory addNamesTaskFactory = new AddGeneNameTaskFactory(filename, applicationManager);
-//		adapter.getTaskManager().execute(addNamesTaskFactory.createTaskIterator()); 
+
 		
 		BufferedReader br = null;
 		try {
@@ -59,6 +55,8 @@ public class StartRServeTaskObservable implements TaskObserver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 		ArrayList<String> keySource = new ArrayList<String>();
 		ArrayList<String> valuesSource = new ArrayList<String>();
 		ArrayList<String> keyTarget = new ArrayList<String>();
@@ -70,6 +68,7 @@ public class StartRServeTaskObservable implements TaskObserver {
 		// col 3 is always target GENESYMBOL 
 		
 		try {
+			
 			while((line = br.readLine()) != null) {
 				
 				
@@ -81,7 +80,9 @@ public class StartRServeTaskObservable implements TaskObserver {
 
 				
 			}
-		} catch (IOException e) {
+		} 
+		
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -105,19 +106,18 @@ public class StartRServeTaskObservable implements TaskObserver {
 		
 		CyNetwork network = applicationManager.getCurrentNetwork();	
 		ArrayList<CyNode> list = (ArrayList<CyNode>) network.getNodeList();
-//		JOptionPane.showMessageDialog(null, list.size());
-//		JOptionPane.showMessageDialog(null, dictionary.size());
+
 		
 		if (network.getDefaultNodeTable().getColumn("gene_symbol") == null) {
 			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
 			
 		}
 		
-		else {
-			network.getDefaultNodeTable().deleteColumn("gene_symbol");
-			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
-			//JOptionPane.showMessageDialog(null, "It exists!");
-		}
+//		else {
+////			network.getDefaultNodeTable().deleteColumn("gene_symbol");
+////			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
+////			//JOptionPane.showMessageDialog(null, "It exists!");
+////		}
 		      
 		
 		for (CyNode n : list) {
