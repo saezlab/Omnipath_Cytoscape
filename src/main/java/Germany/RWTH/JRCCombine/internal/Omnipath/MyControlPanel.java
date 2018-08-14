@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.cytoscape.app.swing.CySwingAppAdapter;
@@ -60,9 +61,14 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JRadioButton ConfidenceAll;
 	private ArrayList<String> selectedConfidence = new ArrayList<String>();
 	private boolean isTF = false;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JPanel panel4;
+	private JPanel panel5;
+	private JPanel panel6;
 	
-	
-	
+
 	
 	// set up GUI control panel
 	public MyControlPanel(CySwingAppAdapter adapter, CyApplicationManager applicationManager) {
@@ -70,43 +76,65 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		this.adapter =  adapter;
 		this.applicationManager = applicationManager;
 		
-		JLabel lbXYZ = new JLabel("Omnipath Control Panel");
-		Font font = new Font("Courier", Font.BOLD,20);
-		lbXYZ.setFont(font);
-		lbXYZ.setBorder(new EmptyBorder(20, 20, 20, 20));
-		GridBagLayout layout = new GridBagLayout();
-		layout.columnWidths = new int[]{100, 110, 110};
-		setSize(new Dimension(640, 640));
-		setPreferredSize(new Dimension(640, 640));
-		lbXYZ.setAlignmentX(Component.CENTER_ALIGNMENT);
-		JLabel website = new JLabel();
-		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
-		website.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		this.add(website);
-		this.add(lbXYZ);
-		this.setVisible(true);
-		this.add(Box.createVerticalStrut(40));
 
-		// create GUI components to allow users to choose datasets 
-		// and organisms
+		panel1 = new JPanel();
+		panel2 = new JPanel();
+		panel3 = new JPanel();
+		panel4 = new JPanel();
+		panel5 = new JPanel();
+		panel6 = new JPanel();
+		
+
+		// create GUI components to allow user selection
+		createWebLabel();
+		createMainLabel();
 		createOrganismselection();
 		createDatabaseselection();
 		createTFregulonConfidenceButtons();
 		createSelectionTable();
 		createConfirmationButton();
+
+		add(panel1);
+
+		add(panel2);
+
+		add(panel3);
+
+		add(panel4);
+
+		add(panel5);
+
+		add(panel6);
 		
-		
-		//createConfidenceLevelButtons();
-		//createDatasets();
+
 		//createSubnetworkSelectorFromFile(this);
+	}
+	
+	public void createMainLabel() {
+		
+		JLabel lbXYZ = new JLabel("Omnipath Control Panel");
+		Font font = new Font("Courier", Font.BOLD,20);
+		lbXYZ.setFont(font);
+		lbXYZ.setBorder(new EmptyBorder(20, 20, 20, 20));
+		lbXYZ.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel1.add(lbXYZ);
+		
+	}
+	
+	public void createWebLabel() {
+		
+		JLabel website = new JLabel();
+		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
+		website.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel1.add(website);
+		
 	}
 	
 	public void createOrganismselection() {
 		
 		// group of JRadioButton for organism selection
 		JLabel l = new JLabel("Select organism: ");
-		add(l);
+		panel2.add(l);
 		l.setBorder(new EmptyBorder(0, 5, 0, 0));
 		JRadioButton option1 = new JRadioButton("Human");
         JRadioButton option2 = new JRadioButton("Mouse");
@@ -116,9 +144,9 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         group.add(option2);
         group.add(option3);
  
-        add(option1);
-        add(option2);
-        add(option3);
+        panel2.add(option1);
+        panel2.add(option2);
+        panel2.add(option3);
         // implicit action listener
         ActionListener actionListener = new ActionListener() {
             @Override
@@ -151,7 +179,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	  
 	  	JLabel l = new JLabel("TF confidence:");
-		add(l);
+		panel4.add(l);
 		l.setBorder(new EmptyBorder(0, 5, 0, 0));
 	  	ConfidenceA = new JRadioButton("A");
 	    ConfidenceB = new JRadioButton("B");
@@ -160,12 +188,19 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	    ConfidenceE = new JRadioButton("E");
 	    ConfidenceAll = new JRadioButton("All");
 	    
-	    add(ConfidenceA);
-        add(ConfidenceB);
-        add(ConfidenceC);
-        add(ConfidenceD);
-        add(ConfidenceE);
-        add(ConfidenceAll);
+	    panel4.add(ConfidenceA);
+	    panel4.add(ConfidenceB);
+	    panel4.add(ConfidenceC);
+	    panel4.add(ConfidenceD);
+	    panel4.add(ConfidenceE);
+	    panel4.add(ConfidenceAll);
+        
+        ConfidenceA.setHorizontalAlignment(SwingConstants.CENTER);  
+        ConfidenceB.setHorizontalAlignment(SwingConstants.CENTER);
+        ConfidenceC.setHorizontalAlignment(SwingConstants.CENTER);  
+        ConfidenceD.setHorizontalAlignment(SwingConstants.CENTER);
+        ConfidenceE.setHorizontalAlignment(SwingConstants.CENTER);  
+        ConfidenceAll.setHorizontalAlignment(SwingConstants.CENTER);
         
         
         ConfidenceA.setEnabled(false);
@@ -256,7 +291,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	public void createDatabaseselection() {
 
 		JLabel l = new JLabel("Select dataset: ");
-		add(l);
+		panel3.add(l);
 		l.setBorder(new EmptyBorder(0,0, 0, 0));
 		
 		//create list of databases choices
@@ -284,7 +319,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		    }
 		});
 
-		add(bookList);
+		panel3.add(bookList);
 		
 	}
 	
@@ -312,8 +347,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	    dual = new DualListBox();
 	    dual.addSourceElements(new String[] { "Complete selection" });
 	    dual.addDestinationElements((new String[] { "Complete selection" }));
-	    add(dual);
-	    
+	    panel5.add(dual);
 		
 	}
 	
@@ -596,7 +630,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		confirm = new JButton("Confirm selections");
 		confirm.setEnabled(true);
-		add(confirm);
+		panel6.add(confirm);
 		confirm.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		// implicit action listener
 		confirm.addActionListener (new ActionListener () {

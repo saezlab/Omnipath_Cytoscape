@@ -253,7 +253,7 @@ public class DualListBox extends JPanel {
 	    Font titleFont = new Font("Courier", Font.BOLD,15);
 	    title.setTitleFont(titleFont);
 	    setBorder(BorderFactory.createCompoundBorder(title, 
-	            BorderFactory.createEmptyBorder(15, 3, 15, 3)));
+	            BorderFactory.createEmptyBorder(20, 3, 15, 3)));
 	    
 	    // layout 
 	    setLayout(new GridBagLayout());
