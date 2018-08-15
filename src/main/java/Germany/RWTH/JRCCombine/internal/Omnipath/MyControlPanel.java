@@ -1,9 +1,9 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -24,7 +25,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
@@ -61,69 +65,91 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JRadioButton ConfidenceAll;
 	private ArrayList<String> selectedConfidence = new ArrayList<String>();
 	private boolean isTF = false;
+	private JLabel wronglabel;
 	private JPanel panel1;
 	private JPanel panel2;
 	private JPanel panel3;
 	private JPanel panel4;
 	private JPanel panel5;
 	private JPanel panel6;
+	private JPanel panel7;
 	
 
 	
 	// set up GUI control panel
 	public MyControlPanel(CySwingAppAdapter adapter, CyApplicationManager applicationManager) {
 		
+		
 		this.adapter =  adapter;
 		this.applicationManager = applicationManager;
 		
-
-		panel1 = new JPanel();
+		
+		setLayout(new GridBagLayout());
+		 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+         
+         
+        // initialise required panels
+        panel1 = new JPanel();
 		panel2 = new JPanel();
 		panel3 = new JPanel();
 		panel4 = new JPanel();
 		panel5 = new JPanel();
 		panel6 = new JPanel();
-		
+		panel7 = new JPanel();
 
-		// create GUI components to allow user selection
+
+		// create GUI components to allow user selection		
+		createMainBorder();
 		createWebLabel();
-		createMainLabel();
 		createOrganismselection();
 		createDatabaseselection();
 		createTFregulonConfidenceButtons();
 		createSelectionTable();
 		createConfirmationButton();
-
-		add(panel1);
-
-		add(panel2);
-
-		add(panel3);
-
-		add(panel4);
-
-		add(panel5);
-
-		add(panel6);
+		createWrongSelectionLabel();
 		
-
+		// add panels to the frame along with the defined 
+		// constrains 
+		add(panel1, gbc);
+		add(panel2, gbc);
+		add(panel3, gbc);
+		add(panel4, gbc);
+		add(panel5, gbc);
+		add(panel6, gbc);
+		add(panel7, gbc);
+		
+		// function to select a sublist of nodes from the network
+		// and sub-select those 
 		//createSubnetworkSelectorFromFile(this);
 	}
 	
-	public void createMainLabel() {
+	
+	// function to create the border for the Omnipath 
+	// Control Panel
+	public void createMainBorder() {
 		
-		JLabel lbXYZ = new JLabel("Omnipath Control Panel");
-		Font font = new Font("Courier", Font.BOLD,20);
-		lbXYZ.setFont(font);
-		lbXYZ.setBorder(new EmptyBorder(20, 20, 20, 20));
-		lbXYZ.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel1.add(lbXYZ);
+		TitledBorder title;
+		Border blackline;
+		blackline = BorderFactory.createLineBorder(Color.black);
+		title = BorderFactory.createTitledBorder(blackline, "Omnipath Control Panel");
+		title.setTitleJustification(TitledBorder.CENTER);
+		Font titleFont = new Font("Courier", Font.BOLD, 20);
+		title.setTitleFont(titleFont);
+		setBorder(BorderFactory.createCompoundBorder(title, 
+		          BorderFactory.createEmptyBorder(20, 3, 15, 3)));
 		
 	}
 	
 	public void createWebLabel() {
 		
 		JLabel website = new JLabel();
+		// make the label responsive to user interaction
 		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
 		website.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel1.add(website);
@@ -133,13 +159,12 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	public void createOrganismselection() {
 		
 		// group of JRadioButton for organism selection
-		JLabel l = new JLabel("Select organism: ");
-		panel2.add(l);
-		l.setBorder(new EmptyBorder(0, 5, 0, 0));
+
 		JRadioButton option1 = new JRadioButton("Human");
         JRadioButton option2 = new JRadioButton("Mouse");
         JRadioButton option3 = new JRadioButton("Rat");
         ButtonGroup group = new ButtonGroup();
+        
         group.add(option1);
         group.add(option2);
         group.add(option3);
@@ -147,6 +172,9 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         panel2.add(option1);
         panel2.add(option2);
         panel2.add(option3);
+        
+        lowBorderMaker("Select Organism", panel2, 10, 20, 10, 20);
+       
         // implicit action listener
         ActionListener actionListener = new ActionListener() {
             @Override
@@ -155,12 +183,16 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
                     JRadioButton radioButton = (JRadioButton) e.getSource();
                     if(radioButton.isSelected()){
                     	organism = radioButton.getText();
-                    	
 	                    if (!organism.equals("") && !database.equals("")) {
 	        		    		database = (String) bookList.getSelectedItem();
 	        			    	dual.enableAddButton();
 	        					dual.enableRemoveButton();
 	        					dual.enableSelectionButtons();
+	        					if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
+		                			
+		                    		WorngLabelVisibility(true);
+		                			
+		                		}else WorngLabelVisibility(false);
 	        					updateList();
 	        		    }
                     	
@@ -168,19 +200,35 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
                 }
             }
         };
+       
         option1.addActionListener(actionListener);
         option2.addActionListener(actionListener);
         option3.addActionListener(actionListener);
         
 		
 	}
-	
-  public void createTFregulonConfidenceButtons() {
+	// function to create Low border for the different panels 
+	// in the control menu
+	public void lowBorderMaker(String stringTitle, JPanel panel, int top, int left,
+			int bottom, int right) {
 		
+		TitledBorder title;
+		Border blackline;
+		blackline = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+		title = BorderFactory.createTitledBorder(
+		                           blackline, stringTitle);
+		title.setTitleJustification(TitledBorder.LEFT);
+		Font titleFont = new Font("Courier", Font.BOLD,14);
+		title.setTitleFont(titleFont);
+        panel.setBorder(BorderFactory.createCompoundBorder(title, 
+		          BorderFactory.createEmptyBorder(top, left, bottom, right)));
+		
+	}
+	
+	public void createTFregulonConfidenceButtons() {
+	
+	  	lowBorderMaker("Select TF Confidence Level", panel4, 10, 20, 10, 20);
 	  
-	  	JLabel l = new JLabel("TF confidence:");
-		panel4.add(l);
-		l.setBorder(new EmptyBorder(0, 5, 0, 0));
 	  	ConfidenceA = new JRadioButton("A");
 	    ConfidenceB = new JRadioButton("B");
 	    ConfidenceC = new JRadioButton("C");
@@ -202,7 +250,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         ConfidenceE.setHorizontalAlignment(SwingConstants.CENTER);  
         ConfidenceAll.setHorizontalAlignment(SwingConstants.CENTER);
         
-        
         ConfidenceA.setEnabled(false);
         ConfidenceB.setEnabled(false);    
         ConfidenceC.setEnabled(false);    
@@ -210,6 +257,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         ConfidenceE.setEnabled(false);    
         ConfidenceAll.setEnabled(false);    
         
+        
+        // adding action listeners for the JRadioButtons
         ConfidenceAll.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	
@@ -263,7 +312,9 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		});
         
 	  }
-  
+	
+	
+	// enabling TF selection according to user selections
   	public void enableTFConfidence() {
   		
   		ConfidenceA.setEnabled(true);
@@ -274,7 +325,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
         ConfidenceAll.setEnabled(true);    
   		
   	}
-  	
+  	// disabling TF selection according to user selections
   	public void disableTFConfidence() {
   		
   		ConfidenceA.setEnabled(false);
@@ -286,19 +337,17 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
   		
   	}
   	
-  	
-	
 	public void createDatabaseselection() {
 
-		JLabel l = new JLabel("Select dataset: ");
-		panel3.add(l);
-		l.setBorder(new EmptyBorder(0,0, 0, 0));
-		
+
+        lowBorderMaker("Select Dataset", panel3, 10, 20, 10, 20);		
 		//create list of databases choices
 		String[] choices = new String[] {"PPInteraction", "Enzyme-substrate interactions", "miRNA-mRNA",
 				"TF-target interactions"};
+		
 		bookList = new JComboBox<>(choices);
 		bookList.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 		// implicit action listener 
 		bookList.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -314,7 +363,13 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 			    	dual.enableAddButton();
 					dual.enableRemoveButton();
 					dual.enableSelectionButtons();
+					if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
+            			
+                		WorngLabelVisibility(true);
+            			
+            		}else WorngLabelVisibility(false);
 					updateList();
+					
 		    	}
 		    }
 		});
@@ -335,7 +390,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
                     try {
                             Desktop.getDesktop().browse(new URI(url));
                     } catch (URISyntaxException | IOException ex) {
-                            JOptionPane.showMessageDialog(null, "A problem occurred while opening URL",
+                            JOptionPane.showMessageDialog(null, "A problem occurred while opening URL. Try again later or check your internet connection",
                             		"Error Message", JOptionPane.ERROR_MESSAGE);
                     }
             }
@@ -351,6 +406,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	}
 	
+	// update databse list according to the user selections
 	public void updateList() {
 		
 		if (!database.equals("") && !organism.equals("")) {
@@ -632,6 +688,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		confirm.setEnabled(true);
 		panel6.add(confirm);
 		confirm.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		
 		// implicit action listener
 		confirm.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -642,7 +700,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						
 						JOptionPane.showMessageDialog(null, "Please select the database to import!",
                         		"Error Message", JOptionPane.ERROR_MESSAGE);
-						
 					}
 					else if (organism.equals("")) {
 						
@@ -673,14 +730,17 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						// read user choices 
 						if (database.equals("TF-target interactions")) isTF = true;
 						else  isTF = false;
+						
 						Object selections[] = new Object[dual.getDestList().getModel().getSize()];
-						for(int i=0; i < dual.getDestList().getModel().getSize(); i++){
+						for(int i = 0; i < dual.getDestList().getModel().getSize(); i++){
 							
 							selections[i] =  dual.getDestList().getModel().getElementAt(i);  
 						}
 						
 						if (database.equals("TF-target interactions")) {
+							
 							selectedConfidence = new ArrayList<String>();
+							
 							if (ConfidenceA.isSelected()) {
 								selectedConfidence.add("A");
 							}
@@ -757,6 +817,21 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		
 	}
+	public void createWrongSelectionLabel() {
+		
+		wronglabel = new JLabel("miRNA are provided only for Humans");
+		wronglabel.setVisible(false);
+		wronglabel.setForeground (Color.red);
+		panel7.add(wronglabel);
+	}
+	public void WorngLabelVisibility(boolean flag) {
+		
+		wronglabel.setVisible(flag);
+		
+	}
+	
+	
+	
 	public void createSubselectedNetwork() {
 		
 		 CyNetwork subselectednetwork = applicationManager.getCurrentNetwork();

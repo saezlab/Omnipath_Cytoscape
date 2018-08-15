@@ -113,11 +113,6 @@ public class StartRServeTaskObservable implements TaskObserver {
 			
 		}
 		
-//		else {
-////			network.getDefaultNodeTable().deleteColumn("gene_symbol");
-////			network.getDefaultNodeTable().createColumn("gene_symbol", String.class, false);
-////			//JOptionPane.showMessageDialog(null, "It exists!");
-////		}
 		      
 		
 		for (CyNode n : list) {

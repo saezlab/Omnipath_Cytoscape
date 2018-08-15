@@ -36,7 +36,6 @@ public class ControlPanelAction extends AbstractCyAction {
 		
 	}
 	
-	
 	public void actionPerformed(ActionEvent e) {
 		
 		// If the state of the cytoPanelWest is HIDE, show it

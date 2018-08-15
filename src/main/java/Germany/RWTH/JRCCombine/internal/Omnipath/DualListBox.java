@@ -1,6 +1,7 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 
@@ -63,7 +65,6 @@ public class DualListBox extends JPanel {
 	  private JButton selectAll;
 	  
 	  private JButton deselectAll;
-	  
 	  
 	  
 
@@ -244,16 +245,14 @@ public class DualListBox extends JPanel {
 	  private void initScreen() {
 		  
 	    // set up the title and frame of the lists 
-	    TitledBorder title;
-	    Border blackline;
-	    blackline = BorderFactory.createLineBorder(Color.black);
-	    title = BorderFactory.createTitledBorder(
-	                           blackline, "Database Selection");
+
+	    Border blackline = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+	    TitledBorder title = BorderFactory.createTitledBorder(blackline, "Database Selection");
 	    title.setTitleJustification(TitledBorder.CENTER);
 	    Font titleFont = new Font("Courier", Font.BOLD,15);
 	    title.setTitleFont(titleFont);
 	    setBorder(BorderFactory.createCompoundBorder(title, 
-	            BorderFactory.createEmptyBorder(20, 3, 15, 3)));
+	              BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 	    
 	    // layout 
 	    setLayout(new GridBagLayout());
@@ -263,8 +262,11 @@ public class DualListBox extends JPanel {
 	    Font font = new Font("Courier", Font.BOLD,14);
 	    sourceLabel.setFont(font);
 	    destLabel.setFont(font);
+	    
 	    sourceListModel = new SortedListModel();
 	    sourceList = new JList(sourceListModel);
+	    
+	    
 	    // button to add selected items 
 	    add(sourceLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0,
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE,
@@ -295,7 +297,6 @@ public class DualListBox extends JPanel {
 	    deselectAll.addActionListener(new deselectActionListener());
 	    
 	    // button to remove selected items 
-	    
 	    removeButton = new JButton(REMOVE_BUTTON_LABEL);
 	    add(removeButton, new GridBagConstraints(1, 4, 1, 2, 0, .25,
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
@@ -305,6 +306,7 @@ public class DualListBox extends JPanel {
 	    
 	    destListModel = new SortedListModel();
 	    destList = new JList(destListModel);
+	    
 	    add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0,
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE,
 	        EMPTY_INSETS, 0, 0));
@@ -312,6 +314,8 @@ public class DualListBox extends JPanel {
 	    add(new JScrollPane(destList), new GridBagConstraints(2, 1, 1, 5, .5,
 	        1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 	        EMPTY_INSETS, 0, 0));
+	    
+	    
 //	    sourceList.setPreferredSize(new Dimension(100, 200));
 //	    destList.setPreferredSize(new Dimension(110, 200));
 	    sourceList.setFixedCellWidth(100);
@@ -323,6 +327,8 @@ public class DualListBox extends JPanel {
 	    removeButton.setEnabled(FALSE);
 	    selectAll.setEnabled(FALSE);
 	    deselectAll.setEnabled(FALSE);
+	    
+	    setMinimumSize(new Dimension(300,300));
 	    
 	  }
 	
@@ -368,7 +374,6 @@ private class selectActionListener implements ActionListener {
 			addDestinationElements(selected);
 			clearSourceListModel();
 			
-		    
 		    }
 	}
 
