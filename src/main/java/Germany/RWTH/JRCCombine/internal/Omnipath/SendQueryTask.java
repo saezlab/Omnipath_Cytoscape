@@ -66,11 +66,11 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		String tempDir = System.getProperty(property);
 		String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
 		
-		filename = tempDir+"/"+tmp+out;
+		filename = tempDir+tmp+out;
 		filename = getWindowsCorrectPath(filename);
 		filePath = new File(filename);
 		
-		JOptionPane.showMessageDialog(null, filename);
+		JOptionPane.showMessageDialog(null, filePath.toString());
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -91,7 +91,7 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 	public static String getWindowsCorrectPath(String filePath)
 	{
 		String filePath2 = filePath;
-		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+		//if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
 			filePath2 = filePath.replace("/", "\\");
 
 		return filePath2;
