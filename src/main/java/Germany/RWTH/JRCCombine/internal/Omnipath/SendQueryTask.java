@@ -70,7 +70,7 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		filename = getWindowsCorrectPath(filename);
 		filePath = new File(filename);
 		
-		JOptionPane.showMessageDialog(null, filePath.toString());
+		//JOptionPane.showMessageDialog(null, filePath.toString());
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
