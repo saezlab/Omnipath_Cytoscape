@@ -109,7 +109,17 @@ public class LoadDataOptions {
 				
 			}
 		}
-		JOptionPane.showMessageDialog(null, isSigned+" "+isDirected);
+//		// if directed is selected 
+//		if(isDirected) {
+//			
+//			// add to query
+//		}
+//		
+//		// if signed is selected 
+//		if (isSigned) {
+//			
+//			// add to query
+//		}
 		
 		
 		// remove all spaces from the query
