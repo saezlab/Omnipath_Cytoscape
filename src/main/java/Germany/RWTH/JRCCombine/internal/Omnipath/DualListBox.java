@@ -328,7 +328,7 @@ public class DualListBox extends JPanel {
 	    selectAll.setEnabled(FALSE);
 	    deselectAll.setEnabled(FALSE);
 	    
-	    setMinimumSize(new Dimension(300,300));
+	    setMinimumSize(new Dimension(250,250));
 	    
 	  }
 	

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,13 +18,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -65,6 +71,8 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JRadioButton ConfidenceAll;
 	private ArrayList<String> selectedConfidence = new ArrayList<String>();
 	private boolean isTF = false;
+	private boolean isDirected = false;
+	private boolean isSigned = false;
 	private JLabel wronglabel;
 	private JPanel panel1;
 	private JPanel panel2;
@@ -73,6 +81,10 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JPanel panel5;
 	private JPanel panel6;
 	private JPanel panel7;
+	private JPanel panel8;
+	private JCheckBox directedInteractionCB;
+	private JCheckBox signedInteractionCB;
+	
 	
 
 	
@@ -85,23 +97,22 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		
 		setLayout(new GridBagLayout());
-		 
-        GridBagConstraints gbc = new GridBagConstraints();
+		GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.weightx = 1;
         gbc.weighty = 1;
-         
-         
+        
         // initialise required panels
         panel1 = new JPanel();
-		panel2 = new JPanel();
+        panel2 = new JPanel();
 		panel3 = new JPanel();
 		panel4 = new JPanel();
 		panel5 = new JPanel();
 		panel6 = new JPanel();
 		panel7 = new JPanel();
+		panel8 = new JPanel();
 
 
 		// create GUI components to allow user selection		
@@ -112,6 +123,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		createTFregulonConfidenceButtons();
 		createSelectionTable();
 		createConfirmationButton();
+		createCheckBoxPanel();
 		createWrongSelectionLabel();
 		
 		// add panels to the frame along with the defined 
@@ -123,6 +135,9 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		add(panel5, gbc);
 		add(panel6, gbc);
 		add(panel7, gbc);
+		add(panel8, gbc);
+	
+	
 		
 		// function to select a sublist of nodes from the network
 		// and sub-select those 
@@ -188,6 +203,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	        			    	dual.enableAddButton();
 	        					dual.enableRemoveButton();
 	        					dual.enableSelectionButtons();
+	        					checkBoxEnable(true);
 	        					if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
 		                			
 		                    		WorngLabelVisibility(true);
@@ -363,6 +379,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 			    	dual.enableAddButton();
 					dual.enableRemoveButton();
 					dual.enableSelectionButtons();
+					checkBoxEnable(true);
 					if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
             			
                 		WorngLabelVisibility(true);
@@ -377,6 +394,18 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		panel3.add(bookList);
 		
 	}
+	
+	public void createCheckBoxPanel() {
+		
+		directedInteractionCB = new JCheckBox("Directed interactions only");
+		signedInteractionCB = new JCheckBox("Signed interactions only");
+		Box box = Box.createVerticalBox();
+		box.add(directedInteractionCB);
+		box.add(signedInteractionCB);
+		panel6.add(box);
+		
+	}
+	
 	
 	
 	// interactive link to get Omnipath information from the control panel 
@@ -675,6 +704,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 				dual.disableAddButton();
 				dual.disableRemoveButton();
 				dual.disableSelectionButtons();
+				checkBoxEnable(false);
 				
 			}
 			
@@ -682,11 +712,20 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	}
 	
+	public void checkBoxEnable(boolean flag) {
+		
+		directedInteractionCB.setEnabled(flag);
+		signedInteractionCB.setEnabled(flag);
+		
+		
+		
+	}
+	
 	public void createConfirmationButton() {
 		
 		confirm = new JButton("Confirm selections");
 		confirm.setEnabled(true);
-		panel6.add(confirm);
+		panel7.add(confirm);
 		confirm.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
 		
@@ -728,8 +767,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 					}
 					else {
 						// read user choices 
-						if (database.equals("TF-target interactions")) isTF = true;
-						else  isTF = false;
 						
 						Object selections[] = new Object[dual.getDestList().getModel().getSize()];
 						for(int i = 0; i < dual.getDestList().getModel().getSize(); i++){
@@ -739,6 +776,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						
 						if (database.equals("TF-target interactions")) {
 							
+							isTF = true;
 							selectedConfidence = new ArrayList<String>();
 							
 							if (ConfidenceA.isSelected()) {
@@ -763,10 +801,14 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 								selectedConfidence.add("D");
 								selectedConfidence.add("E");
 							}
-						}
-						//JOptionPane.showMessageDialog(null, selectedConfidence);
+						} else  isTF = false;
+
+						if (directedInteractionCB.isSelected()) isDirected = true;
+						else isDirected = false;
+						if (signedInteractionCB.isSelected()) isSigned = true;
+						else isSigned = false;
 						loader.getDatabse(database, organism, adapter, applicationManager, selections,
-								selectedConfidence, isTF);
+								selectedConfidence, isTF, isDirected, isSigned);
 					}
 		    		
 				} catch (IOException e1) {
@@ -808,8 +850,6 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 			        	createSubselectedNetwork();
 			        }
 			        else {}
-			 		 
-
 
 			     }
 		    }
@@ -822,15 +862,13 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		wronglabel = new JLabel("miRNA are provided only for Humans");
 		wronglabel.setVisible(false);
 		wronglabel.setForeground (Color.red);
-		panel7.add(wronglabel);
+		panel8.add(wronglabel);
 	}
 	public void WorngLabelVisibility(boolean flag) {
 		
 		wronglabel.setVisible(flag);
 		
 	}
-	
-	
 	
 	public void createSubselectedNetwork() {
 		

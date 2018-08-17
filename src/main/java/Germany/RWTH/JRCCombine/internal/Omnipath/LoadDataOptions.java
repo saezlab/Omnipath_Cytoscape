@@ -21,13 +21,16 @@ public class LoadDataOptions {
 	private Object[] selected;
 	private ArrayList<String> selectedConfidence;
 	private boolean isTF;
+	private boolean isDirected;
+	private boolean isSigned;
 
 	public LoadDataOptions() {}
 	
 	
 	public void getDatabse(String database, String organism, CySwingAppAdapter adapter, 
 						   CyApplicationManager applicationManager,
-						   Object[] selected, ArrayList<String> selectedConfidence, boolean isTF) 
+						   Object[] selected, ArrayList<String> selectedConfidence, boolean isTF,
+						   boolean isDirected, boolean isSigned) 
 						   throws IOException, InterruptedException {
 		
 		this.adapter = adapter;
@@ -37,6 +40,8 @@ public class LoadDataOptions {
 		this.selected = selected;
 		this.selectedConfidence = selectedConfidence;
 		this.isTF = isTF;
+		this.isDirected = isDirected;
+		this.isSigned = isSigned;
 		
 		
 		//start query formulation for interactions or ptms 
@@ -104,6 +109,7 @@ public class LoadDataOptions {
 				
 			}
 		}
+		JOptionPane.showMessageDialog(null, isSigned+" "+isDirected);
 		
 		
 		// remove all spaces from the query

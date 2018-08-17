@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
@@ -53,8 +58,17 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		monitor.setTitle("Omnipath -- Querying dataset...");
 		website = new URL(query);
 		String tmp = database+"_"+organism+"_";
-		filePath = File.createTempFile(tmp, ".txt");
-		filename = filePath.toString();
+		
+		// get OS temporary directory and there
+		// save the file in the format:
+		// database name_organism name_date and time of creation
+		String property = "java.io.tmpdir";
+		String tempDir = System.getProperty(property);
+		String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
+		filePath = new File(tempDir+"/"+tmp+out);
+		
+		filename = getWindowsCorrectPath(filePath.toString());
+		JOptionPane.showMessageDialog(null, filename);
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -69,8 +83,16 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		StartRServeTaskObservable taskObserver = new StartRServeTaskObservable();  
 		LoadNetworkFileTaskFactory NodeFile = adapter.getCyServiceRegistrar().getService(LoadNetworkFileTaskFactory.class);
 		adapter.getTaskManager().execute(NodeFile.createTaskIterator(new File(filename)), taskObserver);
-		 
 		
+	}
+	
+	public static String getWindowsCorrectPath(String filePath)
+	{
+		String filePath2 = filePath;
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+			filePath2 = filePath.replace("/", "\\");
+
+		return filePath2;
 	}
 
 

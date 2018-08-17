@@ -22,9 +22,9 @@ public class StartRServeTaskObservable implements TaskObserver {
     private boolean taskComplete = false;
     
 
-
 	@Override
 	public void taskFinished(ObservableTask task){
+		
 		// Once the network has been imported 
 		// add the gene names 
 		// wait 3 secs to be sure the network import is completed 
@@ -113,7 +113,6 @@ public class StartRServeTaskObservable implements TaskObserver {
 			
 		}
 		
-		      
 		
 		for (CyNode n : list) {
 			
