@@ -91,7 +91,7 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 	public static String getWindowsCorrectPath(String filePath)
 	{
 		String filePath2 = filePath;
-		//if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
 			filePath2 = filePath.replace("/", "\\");
 
 		return filePath2;
