@@ -65,9 +65,11 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		String property = "java.io.tmpdir";
 		String tempDir = System.getProperty(property);
 		String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
-		filePath = new File(tempDir+"/"+tmp+out);
 		
-		filename = getWindowsCorrectPath(filePath.toString());
+		filename = tempDir+"/"+tmp+out;
+		filename = getWindowsCorrectPath(filename);
+		filePath = new File(filename);
+		
 		JOptionPane.showMessageDialog(null, filename);
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
