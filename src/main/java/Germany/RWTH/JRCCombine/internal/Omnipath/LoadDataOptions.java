@@ -109,17 +109,19 @@ public class LoadDataOptions {
 				
 			}
 		}
-//		// if directed is selected 
-//		if(isDirected) {
-//			
-//			// add to query
-//		}
-//		
-//		// if signed is selected 
-//		if (isSigned) {
-//			
-//			// add to query
-//		}
+		// if directed is selected 
+		if(isDirected) {
+			
+			// add to query
+			query = query + "&directed=yes";
+		}
+		
+		// if signed is selected 
+		if (isSigned) {
+			
+			// add to query
+			query = query + "&signed=1";
+		}
 		
 		
 		// remove all spaces from the query

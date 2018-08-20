@@ -156,6 +156,8 @@
       <artifactId>swing-app-api</artifactId>
       <version>${cytoscape.api.version}</version>
     </dependency>
+
+
     
     <!-- OSGi core API -->
     
@@ -165,5 +167,6 @@
       <artifactId>org.osgi.core</artifactId>
       <version>${osgi.api.version}</version>
     </dependency>
+    
   </dependencies>
 </project>

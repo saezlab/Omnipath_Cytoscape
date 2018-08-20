@@ -9,17 +9,12 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
-
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
 import org.cytoscape.work.AbstractTask;
 import org.cytoscape.work.ObservableTask;
 import org.cytoscape.work.TaskMonitor;
-
-
 
 
 
@@ -66,11 +61,21 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		String tempDir = System.getProperty(property);
 		String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
 		
-		filename = tempDir+tmp+out;
-		filename = getWindowsCorrectPath(filename);
-		filePath = new File(filename);
+		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+			
+			filename = tempDir+tmp+out;
+			filePath = new File(filename);
+			filePath.createNewFile();
+			
+		}
+		else {
+			
+			filename = tempDir+tmp+out;
+			filePath = new File(filename);
+		}
 		
-		JOptionPane.showMessageDialog(null, filePath.toString());
+	
+		
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -78,7 +83,7 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		// so it can be accessed later 
 		FileName singleFile = FileName.getInstance();
 		singleFile.setInstance(filename);
-		
+		Thread.sleep(2000);
 		
 		// Plotting network using the cytoscape adapter
 		// and an observable task to check when it gets completed 
