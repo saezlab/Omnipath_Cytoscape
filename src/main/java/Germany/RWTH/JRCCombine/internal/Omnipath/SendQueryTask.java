@@ -85,12 +85,6 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		FileName singleFile = FileName.getInstance();
 		singleFile.setInstance(filename);
 		
-		// Plotting network using the cytoscape adapter
-		// and an observable task to check when it gets completed 
-		StartRServeTaskObservable taskObserver = new StartRServeTaskObservable();  
-		LoadNetworkFileTaskFactory NodeFile = adapter.getCyServiceRegistrar().getService(LoadNetworkFileTaskFactory.class);
-		adapter.getTaskManager().execute(NodeFile.createTaskIterator(new File(filename)), taskObserver);
-		
 	}
 	
 	public static String getWindowsCorrectPath(String filePath)

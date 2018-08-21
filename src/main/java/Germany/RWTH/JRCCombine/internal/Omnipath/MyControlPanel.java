@@ -48,10 +48,11 @@ import javax.swing.JOptionPane;
 
 public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	
+	
 	// declaration of necessary variables 
 	private static final long serialVersionUID = 8292806967891823933L;
 	// default selection of database
-	private String database = "PPInteraction";
+	private String database = "";
 	private String organism = "";
 	private CySwingAppAdapter adapter;
 	private JButton confirm;
@@ -80,6 +81,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JPanel panel8;
 	private JCheckBox directedInteractionCB;
 	private JCheckBox signedInteractionCB;
+	private String previousDataBaseSelection;
 	
 	
 
@@ -196,6 +198,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
                     if(radioButton.isSelected()){
                     	organism = radioButton.getText();
 	                    if (!organism.equals("") && !database.equals("")) {
+	                    		previousDataBaseSelection = database;
 	        		    		database = (String) bookList.getSelectedItem();
 	        			    	dual.enableAddButton();
 	        					dual.enableRemoveButton();
@@ -369,10 +372,11 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		bookList = new JComboBox<>(choices);
 		bookList.setBorder(new EmptyBorder(5, 5, 5, 5));
-		
+		bookList.setSelectedItem(null);
 		// implicit action listener 
 		bookList.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	previousDataBaseSelection = database;
 		    	database = (String) bookList.getSelectedItem();
 		    	if (database.equals("TF-target interactions")) {
 	    			
@@ -448,27 +452,30 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	}
 	
-	// update databse list according to the user selections
+	// update database list according to the user selections
 	public void updateList() throws IOException  {
-
 		
-		if (!database.equals("") && !organism.equals("")) {
-			if (database.equals("miRNA-mRNA") && (organism.equals("Rat") || organism.equals("Mouse"))) {
-		
-				dual.clearDestinationListModel();
-				dual.clearSourceListModel();
-				dual.addSourceElements((new String[] {"0 resources"}));
-				dual.disableAddButton();
-				dual.disableRemoveButton();
-				dual.disableSelectionButtons();
-				checkBoxEnable(false);
-				
-			}
-			else {
+		if (database.equals("miRNA-mRNA") && (organism.equals("Rat") || organism.equals("Mouse"))) {
+			
+			dual.clearDestinationListModel();
+			dual.clearSourceListModel();
+			dual.addSourceElements((new String[] {"0 resources"}));
+			dual.disableAddButton();
+			dual.disableRemoveButton();
+			dual.disableSelectionButtons();
+			checkBoxEnable(false);
+			
+		}
+		else {
+			
+			if ((!previousDataBaseSelection.equals(database)) || ((previousDataBaseSelection.equals("miRNA-mRNA")) && organism.equals("Human")) &&
+					database.equals("miRNA-mRNA")) {
 				
 				LoadDataBasesTaskFactory databasesTF = new LoadDataBasesTaskFactory(database, organism, dual);	
 				adapter.getTaskManager().execute(databasesTF.createTaskIterator());
+			
 			}
+			
 		}
 			
 	}

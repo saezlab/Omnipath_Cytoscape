@@ -39,7 +39,6 @@ public class StartRServeTaskObservable implements TaskObserver {
 		//CySwingAppAdapter adapter = CyActivator.getAdapter();
 		FileName singleFile = FileName.getInstance();
 		String filename = singleFile.s;
-
 		
 		BufferedReader br = null;
 		try {
@@ -78,7 +77,6 @@ public class StartRServeTaskObservable implements TaskObserver {
 				keyTarget.add(columns[1]);
 				valuesTarget.add(columns[3]);
 
-				
 			}
 		} 
 		

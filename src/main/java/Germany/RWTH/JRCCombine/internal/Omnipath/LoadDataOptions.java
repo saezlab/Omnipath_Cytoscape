@@ -150,47 +150,10 @@ public class LoadDataOptions {
 		// and plot the network in Cytoscape
 		else {
 			
-//			SendQueryTaskFactory queryTaskFactory = new SendQueryTaskFactory(query, adapter, database, organism, applicationManager);	
-//			adapter.getTaskManager().execute(queryTaskFactory.createTaskIterator());
+			QuerySentTaskObserver taskObserver = new QuerySentTaskObserver();  
+			SendQueryTaskFactory queryTaskFactory = new SendQueryTaskFactory(query, adapter, database, organism, applicationManager);	
+			adapter.getTaskManager().execute(queryTaskFactory.createTaskIterator(), taskObserver);
 			
-			URL website = new URL(query);
-			String tmp = database+"_"+organism+"_";
-			
-			// get OS temporary directory and there
-			// save the file in the format:
-			// database name_organism name_date and time of creation
-			String property = "java.io.tmpdir";
-			String tempDir = System.getProperty(property);
-			String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
-			
-			String filename;
-			File filePath;
-			if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-				
-				filename = tempDir+tmp+out;
-				filePath = new File(filename);
-				filePath.createNewFile();
-				
-			}
-			else {
-				
-				filename = tempDir+tmp+out;
-				filePath = new File(filename);
-			}
-			
-			ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-			FileOutputStream fos = new FileOutputStream(filename);
-			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-			// save the file name in a singleton class
-			// so it can be accessed later 
-			FileName singleFile = FileName.getInstance();
-			singleFile.setInstance(filename);
-			
-			// Plotting network using the cytoscape adapter
-			// and an observable task to check when it gets completed 
-			StartRServeTaskObservable taskObserver = new StartRServeTaskObservable();  
-			LoadNetworkFileTaskFactory NodeFile = adapter.getCyServiceRegistrar().getService(LoadNetworkFileTaskFactory.class);
-			adapter.getTaskManager().execute(NodeFile.createTaskIterator(new File(filename)), taskObserver);
 			
 		}
 		
