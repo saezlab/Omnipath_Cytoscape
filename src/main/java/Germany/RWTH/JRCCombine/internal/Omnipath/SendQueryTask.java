@@ -9,6 +9,9 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
+
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.task.read.LoadNetworkFileTaskFactory;
@@ -74,8 +77,6 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 			filePath = new File(filename);
 		}
 		
-	
-		
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
 		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -83,7 +84,6 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		// so it can be accessed later 
 		FileName singleFile = FileName.getInstance();
 		singleFile.setInstance(filename);
-		Thread.sleep(2000);
 		
 		// Plotting network using the cytoscape adapter
 		// and an observable task to check when it gets completed 
