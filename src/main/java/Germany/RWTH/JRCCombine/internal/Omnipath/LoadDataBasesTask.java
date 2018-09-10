@@ -44,7 +44,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		taskMonitor.setTitle("Omnipath -- Querying list of Databases from the server...");
 		dual.clearDestinationListModel();
 		dual.clearSourceListModel();
-		if (database.equals("PPInteraction") || database.equals("TF-target interactions") || database.equals("miRNA-mRNA")) {
+		if (database.equals("Omnipath") || database.equals("TF-target interactions") || database.equals("miRNA-mRNA")) {
 			
 			
 			URL oracle = new URL("http://omnipathdb.org/databases/interactions/");
@@ -64,7 +64,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    in.close();
 		    
 		    String[] array;
-		    if (database.equals("PPInteraction")){
+		    if (database.equals("Omnipath")){
 		    	
 		    	array = new String[multiMap.get("PPI").size()];
 		    	array = multiMap.get("PPI").toArray(array);
