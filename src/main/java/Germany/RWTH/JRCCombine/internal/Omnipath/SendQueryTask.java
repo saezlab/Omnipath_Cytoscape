@@ -62,20 +62,10 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		// database name_organism name_date and time of creation
 		String property = "java.io.tmpdir";
 		String tempDir = System.getProperty(property);
-		String out = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss'.txt'").format(new Date());
+		String out = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss'.txt'").format(new Date());
+		filename = tempDir+tmp+out;
+		filePath = new File(filename);
 		
-		if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-			
-			filename = tempDir+tmp+out;
-			filePath = new File(filename);
-			filePath.createNewFile();
-			
-		}
-		else {
-			
-			filename = tempDir+tmp+out;
-			filePath = new File(filename);
-		}
 		
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);
