@@ -55,7 +55,7 @@ public class LoadDataOptions {
 		
 		//start query formulation for interactions or ptms 
 		// interactions query
-		if (database.equals("Omnipath") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
+		if (database.equals("Signaling networks") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
 			
 			query = "http://omnipathdb.org/interactions?fields=sources&fields=references&genesymbols=1";
 			//add extra text if it is TF query

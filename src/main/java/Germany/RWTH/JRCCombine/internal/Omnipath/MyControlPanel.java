@@ -203,7 +203,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	        			    	dual.enableAddButton();
 	        					dual.enableRemoveButton();
 	        					dual.enableSelectionButtons();
-	        					if (database.equals("Omnipath") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
+	        					if (database.equals("Signaling networks") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
 	        						checkBoxEnable(true);
 	        					}else checkBoxEnable(false);
 	        					
@@ -367,7 +367,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 
         lowBorderMaker("Select Dataset", panel3, 10, 20, 10, 20);		
 		//create list of databases choices
-		String[] choices = new String[] {"Omnipath", "Enzyme-substrate interactions", "miRNA-mRNA",
+		String[] choices = new String[] {"Signaling networks", "Enzyme-substrate interactions", "miRNA-mRNA",
 				"TF-target interactions"};
 		
 		bookList = new JComboBox<>(choices);
@@ -389,7 +389,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 			    	dual.enableAddButton();
 					dual.enableRemoveButton();
 					dual.enableSelectionButtons();
-					if (database.equals("Omnipath") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
+					if (database.equals("Signaling networks") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
 						checkBoxEnable(true);
 					}else checkBoxEnable(false);
 					if ((database.equals("miRNA-mRNA")) && (organism.equals("Mouse") || organism.equals("Rat"))) {
