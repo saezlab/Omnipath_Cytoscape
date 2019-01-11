@@ -63,9 +63,9 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		String property = "java.io.tmpdir";
 		String tempDir = System.getProperty(property);
 		String out = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss'.txt'").format(new Date());
-		//filename = tempDir+tmp+out;
+		filename = tempDir+tmp+out;
 		//filePath = new File(filename);
-		File filePath = new File(System.getProperty("java.io.tmpdir"), out);
+		File filePath = new File(System.getProperty("java.io.tmpdir"), filename);
 		filename = filePath.getName();
 		
 		
