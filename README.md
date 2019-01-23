@@ -1,4 +1,4 @@
-# Omnipath_Cytoscape v1.1
+# Omnipath_Cytoscape 
 
 Copyright (C) 2019 Francesco Ceccarelli
 
@@ -22,5 +22,5 @@ You can install OmniPath plug-in directly from the program's app manager, downlo
 1. Download this repository
 2. Open Cytoscape and go to **Apps -> App Manager**
 3. Select **Install from File...**
-4. Browse the **Omnipath-1.1.jar** file inside the `target/` folder on the repository
+4. Browse to the latest version of **Omnipath** file inside the `target/` folder on the repository
 5. Open the file
