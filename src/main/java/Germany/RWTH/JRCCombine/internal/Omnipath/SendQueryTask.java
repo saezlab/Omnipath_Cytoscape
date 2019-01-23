@@ -56,18 +56,18 @@ public class SendQueryTask extends AbstractTask implements ObservableTask {
 		monitor.setTitle("Omnipath -- Querying dataset...");
 		website = new URL(query);
 		String tmp = database+"_"+organism+"_";
-		
+		tmp = tmp.replaceAll("\\s+","");
+
 		// get OS temporary directory and there
 		// save the file in the format:
 		// database name_organism name_date and time of creation
-		String property = "java.io.tmpdir";
-		String tempDir = System.getProperty(property);
+		//String property = "java.io.tmpdir";
+		//String tempDir = System.getProperty(property);
 		String out = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss'.txt'").format(new Date());
-		filename = tempDir+tmp+out;
-		//filePath = new File(filename);
-		filePath = new File(System.getProperty("java.io.tmpdir"), filename);
-		filename = filePath.getName();
+		filename = tmp+out;
 		
+		filePath = new File(System.getProperty("java.io.tmpdir"), filename);
+		filename = filePath.getAbsolutePath();
 		
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		fos = new FileOutputStream(filename);

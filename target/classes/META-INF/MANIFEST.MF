@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: Germany.RWTH.JRCCombine.Omnipath
 Bundle-Name: Omnipath
-Bundle-Version: 1.0
+Bundle-Version: 1.1
 Built-By: francescoceccarelli
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1536776675929
+Bnd-LastModified: 1548201737881
 Bundle-Activator: Germany.RWTH.JRCCombine.internal.Omnipath.CyActivato
  r
 Import-Package: javax.swing,javax.swing.border,javax.swing.filechooser
