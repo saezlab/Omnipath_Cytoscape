@@ -28,6 +28,8 @@ public class LoadDataOptions {
 	private CySwingAppAdapter adapter;
 	private CyApplicationManager applicationManager;
 	private Object[] selected;
+	private Object[] pathways;
+	private Object[] resources;
 	private ArrayList<String> selectedConfidence;
 	private boolean isTF;
 	private boolean isDirected;
@@ -43,6 +45,8 @@ public class LoadDataOptions {
 						   throws IOException, InterruptedException {
 		
 		this.adapter = adapter;
+		//this.pathways = pathways;
+		//this.resources = resources;
 		this.organism = organism;
 		this.database = database;
 		this.applicationManager = applicationManager;
@@ -149,7 +153,6 @@ public class LoadDataOptions {
 		// else create task to execute the query 
 		// and plot the network in Cytoscape
 		else {
-			
 			QuerySentTaskObserver taskObserver = new QuerySentTaskObserver();  
 			SendQueryTaskFactory queryTaskFactory = new SendQueryTaskFactory(query, adapter, database, organism, applicationManager);	
 			adapter.getTaskManager().execute(queryTaskFactory.createTaskIterator(), taskObserver);

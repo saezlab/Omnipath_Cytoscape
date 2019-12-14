@@ -78,7 +78,6 @@ public class LoadDataBasesTask extends AbstractTask {
 		    	array = new String[multiMap.get("MTI").size()];
 		    	array = multiMap.get("MTI").toArray(array);
 		    }
-			Thread.sleep(2000);
 			dual.addSourceElements(array);
 
 			
@@ -104,12 +103,8 @@ public class LoadDataBasesTask extends AbstractTask {
 		    if (database.equals("Enzyme-substrate interactions")){
 		    	array = new String[multiMap.get("*").size()];
 		    	array = multiMap.get("*").toArray(array);
-		    	Thread.sleep(2000);
 		    	dual.addSourceElements(array);
-		    }
-		    
-		    
-		    
+		    }    
 		    
 		}
 		
