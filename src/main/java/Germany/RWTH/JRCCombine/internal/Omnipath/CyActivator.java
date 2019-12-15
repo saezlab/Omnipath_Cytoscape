@@ -43,7 +43,7 @@ public class CyActivator extends AbstractCyActivator {
 //	public static final String visualStyleName4 = "default black";
 	
 	public static String visualStyleFile = "/OmnipathStyle.xml";
-	public static String visualStyleName = "StyleOmnipath";
+	public static String visualStyleName = "OmnipathStyle";
 	
 	
 	public CyActivator() {

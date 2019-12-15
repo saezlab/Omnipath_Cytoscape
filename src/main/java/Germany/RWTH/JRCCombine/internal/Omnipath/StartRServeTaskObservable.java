@@ -159,15 +159,38 @@ public class StartRServeTaskObservable implements TaskObserver {
 			String gene_name = dictionary.get(uniID);
 			//JOptionPane.showMessageDialog(null, gene_name);
 			network.getRow(n).set("gene_symbol", gene_name);
-			if (keySource.contains(uniID)) {
-				network.getRow(n).set("node_type", "source");
+			
+			if (filename.contains("Signalingnetworks")) {
+			
+				network.getRow(n).set("node_type", "protein");
 			}
-			if (keyTarget.contains(uniID)) {
-				network.getRow(n).set("node_type", "target");
+			else if (filename.contains("Enzyme-substrate")) {
+				
+				network.getRow(n).set("node_type", "protein");
 			}
-			if (keySource.contains(uniID) && keyTarget.contains(uniID)) {
-				network.getRow(n).set("node_type", "both");
+			else if (filename.contains("miRNA")) {
+				if (keySource.contains(uniID)) {
+					network.getRow(n).set("node_type", "miRNA");
+				}
+				else  {
+					network.getRow(n).set("node_type", "mRNA");
+				}
 			}
+			else {
+				if (keySource.contains(uniID)) {
+					network.getRow(n).set("node_type", "TF");
+				}
+				if (keyTarget.contains(uniID)) {
+					network.getRow(n).set("node_type", "target");
+				}
+				if (keySource.contains(uniID) && keyTarget.contains(uniID)) {
+					network.getRow(n).set("node_type", "TF");
+				}
+			}
+			
+			
+			
+			
 			
 			
 			
