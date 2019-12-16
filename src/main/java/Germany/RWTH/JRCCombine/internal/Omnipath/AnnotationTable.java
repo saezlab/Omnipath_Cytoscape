@@ -1,5 +1,7 @@
 package Germany.RWTH.JRCCombine.internal.Omnipath;
 
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,29 +10,48 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.AncestorListener;
+
+import org.cytoscape.app.swing.CySwingAppAdapter;
 
 
 
-public class DualListBox extends JPanel {
+public class AnnotationTable extends JPanel implements ActionListener {
 
 	  
 	  private static final long serialVersionUID = 1L;
 
+	  private CySwingAppAdapter adapter; 
+	  
 	  private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
 
-	  private static final String ADD_BUTTON_LABEL = "Add >>";
+	  private static final String ADD_BUTTON_LABEL = "Query pathways";
 
 	  private static final String REMOVE_BUTTON_LABEL = "<< Remove";
 	  
@@ -38,9 +59,9 @@ public class DualListBox extends JPanel {
 
 	  private static final String DESELECTALL_BUTTON_LABEL = "Deselect all";
 
-	  private static final String DEFAULT_SOURCE_CHOICE_LABEL = "Available choices";
+	  private static final String DEFAULT_SOURCE_CHOICE_LABEL = "Resources";
 
-	  private static final String DEFAULT_DEST_CHOICE_LABEL = "Your choices";
+	  private static final String DEFAULT_DEST_CHOICE_LABEL = "Features";
 	  
 	  private static final boolean FALSE = false;
 
@@ -68,7 +89,8 @@ public class DualListBox extends JPanel {
 	  
 	  
 
-	  public DualListBox() {
+	  public AnnotationTable(CySwingAppAdapter adapter) {
+		this.adapter = adapter;
 	    initScreen();
 	  }
 	  
@@ -120,6 +142,16 @@ public class DualListBox extends JPanel {
 
 	  public void setDestinationChoicesTitle(String newValue) {
 	    destLabel.setText(newValue);
+	  }
+	  public Object[] getResource() {
+		  @SuppressWarnings("deprecation")
+		  Object selected[] = sourceList.getSelectedValues();
+		  return selected;
+	  }
+	  public Object[] getPathways() {
+		  @SuppressWarnings("deprecation")
+		  Object selected[] = destList.getSelectedValues();
+		  return selected;
 	  }
 
 	  public void clearSourceListModel() {
@@ -247,7 +279,7 @@ public class DualListBox extends JPanel {
 	    // set up the title and frame of the lists 
 
 	    Border blackline = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-	    TitledBorder title = BorderFactory.createTitledBorder(blackline, "Database Selection");
+	    TitledBorder title = BorderFactory.createTitledBorder(blackline, "Annotation");
 	    title.setTitleJustification(TitledBorder.CENTER);
 	    Font titleFont = new Font("Courier", Font.BOLD,15);
 	    title.setTitleFont(titleFont);
@@ -266,13 +298,16 @@ public class DualListBox extends JPanel {
 	    sourceListModel = new SortedListModel();
 	    sourceList = new JList(sourceListModel);
 	    
+	    JScrollPane source_scrollPane = new JScrollPane(sourceList);
+	    source_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    source_scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	    
 	    // button to add selected items 
 	    add(sourceLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0,
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE,
 	        EMPTY_INSETS, 0, 0));
 	    
-	    add(new JScrollPane(sourceList), new GridBagConstraints(0, 1, 1, 5, .5,
+	    add(source_scrollPane, new GridBagConstraints(0, 1, 1, 5, .5,
 	        1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 	        EMPTY_INSETS, 0, 0));
 
@@ -303,47 +338,124 @@ public class DualListBox extends JPanel {
 	            0, 5, 0, 5), 0, 0));
 	    
 	    removeButton.addActionListener(new RemoveListener());
-	    
+	   
+
+
 	    destListModel = new SortedListModel();
 	    destList = new JList(destListModel);
+	    
+	    sourceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    destList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	    
+	    
+	    JScrollPane dest_scrollPane = new JScrollPane(destList);
+	    dest_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    dest_scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	    
 	    add(destLabel, new GridBagConstraints(2, 0, 1, 1, 0, 0,
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE,
 	        EMPTY_INSETS, 0, 0));
 	    
-	    add(new JScrollPane(destList), new GridBagConstraints(2, 1, 1, 5, .5,
+	    add(dest_scrollPane, new GridBagConstraints(2, 1, 1, 5, .5,
 	        1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 	        EMPTY_INSETS, 0, 0));
 	    
 	    
 //	    sourceList.setPreferredSize(new Dimension(100, 200));
 //	    destList.setPreferredSize(new Dimension(110, 200));
-	    sourceList.setFixedCellWidth(100);
-	    sourceList.setFixedCellHeight(10);
-	    destList.setFixedCellWidth(100);
-	    destList.setFixedCellHeight(10);
+	    sourceList.setFixedCellWidth(160);
+	    sourceList.setFixedCellHeight(14);
+	    destList.setFixedCellWidth(160);
+	    destList.setFixedCellHeight(14);
+	    
+
+	    
+	    sourceList.addMouseListener(new MouseAdapter(){
+
+	        //Called when you click the JList
+	        public void mouseClicked(MouseEvent e) {
+
+	            JList list = (JList)e.getSource();
+	            //Makes sure it only registers for single clicks(always registers even on double clicks, just registers twice.)
+	            if (e.getClickCount() == 1) {
+	              
+	              clearDestinationListModel();
+		   		  Object selected = sourceList.getSelectedValue();
+		   		  String s = (String)selected;
+		   		  //String database = s.split("-")[0];
+		   		  HashMap table = MyAnnotationTable.getInstance(); 
+		   		  String[] values = (String[]) table.get(s);
+		   		  MyControlPanel.annotation.addDestinationElements(values);
+		   		  
+	              //LoadAnnotationTaskFactory annotation = new LoadAnnotationTaskFactory(database);	
+	        	  //adapter.getTaskManager().execute(annotation.createTaskIterator());
+	            	
+	                
+	            }
+	        }
+	    });
+	    
 
 	    addButton.setEnabled(FALSE);
 	    removeButton.setEnabled(FALSE);
-	    selectAll.setEnabled(FALSE);
-	    deselectAll.setEnabled(FALSE);
+	    selectAll.setEnabled(TRUE);
+	    deselectAll.setEnabled(TRUE);
+	    addButton.setVisible(FALSE);
+	    removeButton.setVisible(FALSE);
+	    selectAll.setVisible(FALSE);
+	    deselectAll.setVisible(FALSE);
+	    setMinimumSize(new Dimension(170,170));
 	    
-	    setMinimumSize(new Dimension(150,150));
 	    
 	  }
 	
 	  
 	  
 	  
-private class AddListener implements ActionListener {
-	public void actionPerformed(ActionEvent e) {
+private class AddListener implements ActionListener  {
+	public void actionPerformed(ActionEvent e){
 		if (!sourceList.isSelectionEmpty()) {
-		
-		      Object selected[] = sourceList.getSelectedValues();
-		      addDestinationElements(selected);
-		      clearSourceSelected();
+			
+//			  clearDestinationListModel();
+//		      Object selected = sourceList.getSelectedValue();
+//		      String s = (String)selected;
+//		      String database = s.split("-")[0];
+//		      ArrayList<Object> unique_annotation = new ArrayList<Object>();
+//		     
+//		      try {
+//			      URL oracle = new URL("http://omnipathdb.org/annotations_summary?databases="+database);
+//				  URLConnection con = oracle.openConnection();
+//				  InputStream is =con.getInputStream();
+//				  BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
+//				  in.readLine();
+//				  String[] values;
+//				  String[] split;
+//				  String inputLine;
+//				  while ((inputLine = in.readLine()) != null) {
+//				    		    split = inputLine.split("\t");
+//				    		    
+//				    		    if (split[1].equals("pathway")) {
+//				    		    	
+//				    		    	values = split[2].split("#");
+//				    		    	for (int k = 0; k<values.length;k++) {
+//					    		    	unique_annotation.add(values[k]);
+//				    		    	}
+//				    		    }
+//				    		    
+//				    		    
+//				    		    
+//				    		   
+//				    	}
+//				    	in.close(); 
+//		      } catch (Exception e1) {
+//		    	  e1.printStackTrace();
+//		      }
+//		      addDestinationElements(unique_annotation.toArray());
+		      
 		}
+		
 	}
+
 }
 
 
@@ -377,6 +489,15 @@ private class selectActionListener implements ActionListener {
 		    }
 	}
 
+private class selectSource implements ActionListener {
+	public void actionPerformed(ActionEvent e) {
+		
+			
+		    //JOptionPane.showMessageDialog(null,"HERE");
+			
+		    }
+	}
+
 private class deselectActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 			
@@ -392,6 +513,13 @@ private class deselectActionListener implements ActionListener {
 			}
 		    
 	}
+
+@Override
+public void actionPerformed(ActionEvent e) {
+	// TODO Auto-generated method stub
+	//JOptionPane.showMessageDialog(null, "HERE");
+	
+}
 
 
 }

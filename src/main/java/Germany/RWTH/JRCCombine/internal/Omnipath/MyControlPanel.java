@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,9 +19,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -26,6 +32,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -40,6 +49,7 @@ import org.cytoscape.model.CyNetwork;
 import org.cytoscape.task.create.NewNetworkSelectedNodesOnlyTaskFactory;
 import org.cytoscape.task.select.SelectFromFileListTaskFactory;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 
@@ -56,10 +66,13 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private String organism = "";
 	private CySwingAppAdapter adapter;
 	private JButton confirm;
+	private JButton annotationButton;
+	private JButton queryAnnotation;
 	private JComboBox<String> bookList;
 	private JButton subnetSelector;
 	private CyApplicationManager applicationManager;
 	private DualListBox dual;
+	public static AnnotationTable annotation;
 	private JRadioButton ConfidenceA;
 	private JRadioButton ConfidenceB;
 	private JRadioButton ConfidenceC;
@@ -79,15 +92,35 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 	private JPanel panel6;
 	private JPanel panel7;
 	private JPanel panel8;
+	private JPanel panel9;
+	private JPanel panel10;
+	private JPanel panel11;
 	private JCheckBox directedInteractionCB;
 	private JCheckBox signedInteractionCB;
 	private String previousDataBaseSelection;
+	private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+	private static Object[] resources;
+	private static Object[] pathways;
+	public static JList<String> list;
 	
 	
 
 	
+	public static Object[] getPathways() {
+		return pathways;
+		
+	}
+	public static Object[] getResources() {
+		return resources;
+		
+	}
+	public void setList (JList<String> list) {
+		this.list = list;
+	}
+
+	
 	// set up GUI control panel
-	public MyControlPanel(CySwingAppAdapter adapter, CyApplicationManager applicationManager) {
+	public MyControlPanel(CySwingAppAdapter adapter, CyApplicationManager applicationManager)  {
 		
 		
 		this.adapter =  adapter;
@@ -95,6 +128,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		
 		setLayout(new GridBagLayout());
+		
 		GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -111,6 +145,9 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		panel6 = new JPanel();
 		panel7 = new JPanel();
 		panel8 = new JPanel();
+		panel9 = new JPanel();
+		panel10 = new JPanel();
+		panel11 = new JPanel();
 
 
 		// create GUI components to allow user selection		
@@ -123,20 +160,79 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		createConfirmationButton();
 		createCheckBoxPanel();
 		createWrongSelectionLabel();
+		createAnnotation();
+		cretateLunchQueryButton();
+		createQueryAnnotationButton();
 		
 		// add panels to the frame along with the defined 
 		// constrains 
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 0;
 		add(panel1, gbc);
-		add(panel2, gbc);
-		add(panel3, gbc);
-		add(panel4, gbc);
-		add(panel5, gbc);
-		add(panel6, gbc);
-		add(panel7, gbc);
-		add(panel8, gbc);
-	
-	
 		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		add(panel2, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		add(panel3, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 3;
+		add(panel4, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 4;
+		add(panel5, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 10;
+		gbc.gridx = 2;
+		gbc.gridy = 8;
+		add(panel9, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 6;
+		add(panel6, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 8;
+		add(panel8, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 10;
+		add(panel7, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 7;
+		add(panel10, gbc);
+		
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.5;
+		gbc.gridx = 2;
+		gbc.gridy = 9;
+		add(panel11, gbc);
+	
+	
 		// function to select a sublist of nodes from the network
 		// and sub-select those 
 		//createSubnetworkSelectorFromFile(this);
@@ -150,12 +246,12 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		TitledBorder title;
 		Border blackline;
 		blackline = BorderFactory.createLineBorder(Color.black);
-		title = BorderFactory.createTitledBorder(blackline, "Omnipath Control Panel");
+		title = BorderFactory.createTitledBorder(blackline, "OmniPath Control Panel");
 		title.setTitleJustification(TitledBorder.CENTER);
 		Font titleFont = new Font("Courier", Font.BOLD, 20);
 		title.setTitleFont(titleFont);
 		setBorder(BorderFactory.createCompoundBorder(title, 
-		          BorderFactory.createEmptyBorder(20, 3, 15, 3)));
+		          BorderFactory.createEmptyBorder(5, 3, 15, 3)));
 		
 	}
 	
@@ -163,11 +259,42 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		JLabel website = new JLabel();
 		// make the label responsive to user interaction
-		goWebsite(website, "http://omnipathdb.org/info", "Omnipath");
+		goWebsite(website, "http://omnipathdb.org/info", "OmniPath");
 		website.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel1.add(website);
 		
 	}
+	
+	public void createAnnotation(){
+		
+		
+		//DefaultListModel<String> model = new DefaultListModel<>();
+		
+		annotation = new AnnotationTable(adapter);
+		annotation.addSourceElements(new String[] { "0 annotations" });
+		annotation.addDestinationElements(new String[] { "0 features" });
+		panel9.add(annotation);
+		
+	}
+	
+	public void createQueryAnnotationButton() {
+		
+		queryAnnotation = new JButton("Query annotations");
+		queryAnnotation.setEnabled(true);
+		panel11.add(queryAnnotation);
+		queryAnnotation.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		//implicit action listener
+		queryAnnotation.addActionListener (new ActionListener () {
+				    public void actionPerformed(ActionEvent e) {
+				   
+				    	LoadAnnotationTaskFactory annotation = new LoadAnnotationTaskFactory();	
+			    		adapter.getTaskManager().execute(annotation.createTaskIterator());
+			    		annotationButton.setEnabled(true);
+				    }
+				});
+	}
+	
+	
 	
 	public void createOrganismselection() {
 		
@@ -245,8 +372,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		title.setTitleJustification(TitledBorder.LEFT);
 		Font titleFont = new Font("Courier", Font.BOLD,14);
 		title.setTitleFont(titleFont);
-        panel.setBorder(BorderFactory.createCompoundBorder(title, 
-		          BorderFactory.createEmptyBorder(top, left, bottom, right)));
+        panel.setBorder(BorderFactory.createCompoundBorder(title, BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		
 	}
 	
@@ -416,7 +542,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		directedInteractionCB = new JCheckBox("Directed interactions only");
 		signedInteractionCB = new JCheckBox("Signed interactions only");
-		Box box = Box.createVerticalBox();
+		Box box = Box.createHorizontalBox();
 		box.add(directedInteractionCB);
 		box.add(signedInteractionCB);
 		panel6.add(box);
@@ -495,17 +621,20 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 	}
 	
-	public void createConfirmationButton() {
+public void cretateLunchQueryButton() {
 		
-		confirm = new JButton("Confirm selections");
+		confirm = new JButton("Launch query");
 		confirm.setEnabled(true);
-		panel7.add(confirm);
+		panel10.add(confirm);
 		confirm.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
 		
 		
 		// implicit action listener
 		confirm.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	//pathways = annotation.getPathways();
+				//resources = annotation.getResource();
 		    	
 		    	LoadDataOptions loader = new LoadDataOptions();
 		    	try {
@@ -581,8 +710,12 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 						else isDirected = false;
 						if (signedInteractionCB.isSelected()) isSigned = true;
 						else isSigned = false;
+						
 						loader.getDatabse(database, organism, adapter, applicationManager, selections,
 								selectedConfidence, isTF, isDirected, isSigned);
+						
+						// loader.getDatabse(database, organism, adapter, applicationManager, selections,
+						//		selectedConfidence, isTF, isDirected, isSigned, pathways, resources);
 					}
 		    		
 				} catch (IOException e1) {
@@ -594,6 +727,47 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 				}
 		    }
 		});
+		
+	}
+	
+	public void createConfirmationButton() {
+		
+		annotationButton = new JButton("Annotate network");
+		annotationButton.setEnabled(false);
+		panel7.add(annotationButton);
+		annotationButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		// implicit action listener
+		annotationButton.addActionListener (new ActionListener () {
+				    public void actionPerformed(ActionEvent e) {
+				   
+				    	
+				    	CyNetwork network = applicationManager.getCurrentNetwork();
+				    	if (network != null) {
+				    		
+				    		
+				    		Object values[] = annotation.getDestList().getSelectedValues();
+				    		String selected = (String)annotation.getSourceList().getSelectedValue();
+				    		
+				    		if (selected!=null && values.length!=0) {
+				    			String database = selected.split("/")[0];
+					    		String label = selected.split("/")[1];
+						    	FindAnnotationTaskFactory findAnnotation = new FindAnnotationTaskFactory(database, label, values );	
+								adapter.getTaskManager().execute(findAnnotation.createTaskIterator());
+				    		}
+				    		else {
+					    		JOptionPane.showMessageDialog(null, "Please make a selection for source and features to proceed!",
+		                        		"Error Message", JOptionPane.ERROR_MESSAGE);
+					    	}
+				    		
+				    	}
+				    	else {
+				    		JOptionPane.showMessageDialog(null, "Please import a network to proceed!",
+	                        		"Error Message", JOptionPane.ERROR_MESSAGE);
+				    	}
+				    	
+				    	
+				    }
+				});
 		
 	}
 	
