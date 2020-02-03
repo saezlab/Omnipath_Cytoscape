@@ -66,17 +66,17 @@ public class LoadDataBasesTask extends AbstractTask {
 		    String[] array;
 		    if (database.equals("Signaling networks")){
 		    	
-		    	array = new String[multiMap.get("PPI").size()];
-		    	array = multiMap.get("PPI").toArray(array);
+		    	array = new String[multiMap.get("post_translational").size()];
+		    	array = multiMap.get("post_translational").toArray(array);
 		    	
 		    	
 		    }else if (database.equals("TF-target interactions")) {
-		    	array = new String[multiMap.get("TF").size()];
-		    	array = multiMap.get("TF").toArray(array);
+		    	array = new String[multiMap.get("transcriptional").size()];
+		    	array = multiMap.get("transcriptional").toArray(array);
 		    	
 		    }else {
-		    	array = new String[multiMap.get("MTI").size()];
-		    	array = multiMap.get("MTI").toArray(array);
+		    	array = new String[multiMap.get("post_translational").size()];
+		    	array = multiMap.get("post_translational").toArray(array);
 		    }
 			dual.addSourceElements(array);
 
