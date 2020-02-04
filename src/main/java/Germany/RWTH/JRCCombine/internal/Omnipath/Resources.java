@@ -59,8 +59,16 @@ public class Resources extends AbstractCyAction {
 			
 			String uniqueName = network.getRow(s).get("shared name", String.class);
 			String references = network.getRow(s).get("references", String.class);
-			String uniqueReferences[] = references.split(";");
-			Set<String> temp = new LinkedHashSet<String>( Arrays.asList( uniqueReferences ) );
+			List<String> uniqueReferences = Arrays.asList(
+                    references.split(";")
+                ).stream().map(
+                    (String ref) -> {
+                        String refs[] = ref.split(":");
+                        return refs.length == 2 ? refs[1] : refs[0];
+                    }
+                ).collect(Collectors.toList()
+            );
+			Set<String> temp = new LinkedHashSet<String>(uniqueReferences);
 			String[] result = temp.toArray( new String[temp.size()] );
 
 			String links="";
