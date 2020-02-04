@@ -252,7 +252,7 @@ public class DualListBox extends JPanel {
 	    Font titleFont = new Font("Courier", Font.BOLD,15);
 	    title.setTitleFont(titleFont);
 	    setBorder(BorderFactory.createCompoundBorder(title, 
-	              BorderFactory.createEmptyBorder(20, 20, 20, 20)));
+	              BorderFactory.createEmptyBorder(3, 3, 3, 3)));
 	    
 	    // layout 
 	    setLayout(new GridBagLayout());
@@ -319,16 +319,16 @@ public class DualListBox extends JPanel {
 //	    sourceList.setPreferredSize(new Dimension(100, 200));
 //	    destList.setPreferredSize(new Dimension(110, 200));
 	    sourceList.setFixedCellWidth(100);
-	    sourceList.setFixedCellHeight(17);
-	    destList.setFixedCellWidth(115);
-	    destList.setFixedCellHeight(17);
+	    sourceList.setFixedCellHeight(10);
+	    destList.setFixedCellWidth(100);
+	    destList.setFixedCellHeight(10);
 
 	    addButton.setEnabled(FALSE);
 	    removeButton.setEnabled(FALSE);
 	    selectAll.setEnabled(FALSE);
 	    deselectAll.setEnabled(FALSE);
 	    
-	    setMinimumSize(new Dimension(250,250));
+	    setMinimumSize(new Dimension(150,150));
 	    
 	  }
 	
@@ -395,7 +395,3 @@ private class deselectActionListener implements ActionListener {
 
 
 }
-		
-
-
-		
