@@ -75,8 +75,9 @@ public class LoadDataBasesTask extends AbstractTask {
 		    	array = multiMap.get("transcriptional").toArray(array);
 		    	
 		    }else {
-		    	array = new String[multiMap.get("post_translational").size()];
-		    	array = multiMap.get("post_translational").toArray(array);
+                /* this gonna be miRNA-mRNA */
+		    	array = new String[multiMap.get("post_transcriptional").size()];
+		    	array = multiMap.get("post_transcriptional").toArray(array);
 		    }
 			dual.addSourceElements(array);
 
