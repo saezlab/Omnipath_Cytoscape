@@ -65,7 +65,7 @@ public class LoadDataOptions {
 			//add extra text if it is TF query
 			if (database.equals("TF-target interactions")) {
 				
-				query= query +"&types=TF";
+				query= query +"&types=transcriptional";
 				
 			}
 			//add extra text if it is miRNA query
