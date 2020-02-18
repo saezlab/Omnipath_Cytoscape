@@ -58,7 +58,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    while ((inputLine = in.readLine()) != null) {
 		    	split = inputLine.split("\t");
 		    	databases = split[1].split(";");
-		    	ArrayList<String> values = new ArrayList( Arrays.asList(databases));
+		    	ArrayList<String> values = new ArrayList(Arrays.asList(databases));
 		    	multiMap.put(split[0], values);
 		    }
 		    in.close();
@@ -75,7 +75,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    	array = multiMap.get("transcriptional").toArray(array);
 		    	
 		    }else {
-                /* this gonna be miRNA-mRNA */
+		    	
 		    	array = new String[multiMap.get("post_transcriptional").size()];
 		    	array = multiMap.get("post_transcriptional").toArray(array);
 		    }
@@ -95,7 +95,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    while ((inputLine = in.readLine()) != null) {
 		    	split = inputLine.split("\t");
 		    	databases = split[1].split(";");
-		    	ArrayList<String> values = new ArrayList(Arrays.asList( databases));
+		    	ArrayList<String> values = new ArrayList(Arrays.asList(databases));
 		    	multiMap.put(split[0], values);
 		    }
 		        
