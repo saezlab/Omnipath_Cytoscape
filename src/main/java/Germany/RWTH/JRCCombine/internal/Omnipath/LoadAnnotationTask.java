@@ -60,7 +60,7 @@ public class LoadAnnotationTask extends AbstractTask {
 		MyControlPanel.annotation.clearDestinationListModel();
 		ArrayList<Object> unique_annotation = new ArrayList<Object>();
 		
-		URL oracle = new URL("http://omnipathdb.org/annotations_summary?cytoscape=1");
+		URL oracle = new URL("https://omnipathdb.org/annotations_summary?cytoscape=1");
     	URLConnection con = oracle.openConnection();
         InputStream is =con.getInputStream();        
         BufferedReader in = new BufferedReader(

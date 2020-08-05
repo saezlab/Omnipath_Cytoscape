@@ -259,7 +259,7 @@ public class MyControlPanel extends JPanel implements CytoPanelComponent {
 		
 		JLabel website = new JLabel();
 		// make the label responsive to user interaction
-		goWebsite(website, "http://omnipathdb.org/info", "OmniPath");
+		goWebsite(website, "https://omnipathdb.org/info", "OmniPath");
 		website.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel1.add(website);
 		

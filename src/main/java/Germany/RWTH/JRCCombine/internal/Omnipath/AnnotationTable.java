@@ -423,7 +423,7 @@ private class AddListener implements ActionListener  {
 //		      ArrayList<Object> unique_annotation = new ArrayList<Object>();
 //		     
 //		      try {
-//			      URL oracle = new URL("http://omnipathdb.org/annotations_summary?databases="+database);
+//			      URL oracle = new URL("https://omnipathdb.org/annotations_summary?databases="+database);
 //				  URLConnection con = oracle.openConnection();
 //				  InputStream is =con.getInputStream();
 //				  BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));

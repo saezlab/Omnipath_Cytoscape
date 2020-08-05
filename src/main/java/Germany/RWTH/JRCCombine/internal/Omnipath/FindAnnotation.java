@@ -56,7 +56,7 @@ public class FindAnnotation extends AbstractTask {
         }
         
 		
-        String annotationQuery = ("http://omnipathdb.org/annotations?databases="+database);
+        String annotationQuery = ("https://omnipathdb.org/annotations?databases="+database);
         URL oracle = new URL(annotationQuery);
     	URLConnection con = oracle.openConnection();
         InputStream is =con.getInputStream();        

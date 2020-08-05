@@ -200,7 +200,7 @@ public class StartRServeTaskObservable implements TaskObserver {
 		
 		//add annotation after the network is imported according to user choices
 		//network = applicationManager.getCurrentNetwork();	
-//		String annotationQuery = "http://omnipathdb.org/annotations?databases=";
+//		String annotationQuery = "https://omnipathdb.org/annotations?databases=";
 //		Object[] pathways = MyControlPanel.getPathways();
 //		Object[] resources = MyControlPanel.getResources();
 //		for (int i = 0; i< resources.length; i++) {
@@ -289,7 +289,7 @@ public class StartRServeTaskObservable implements TaskObserver {
 //					// TODO Auto-generated catch block
 //					JOptionPane.showMessageDialog(null, "ERROR");
 //				}
-//		        annotationQuery = "http://omnipathdb.org/annotations?databases=";
+//		        annotationQuery = "https://omnipathdb.org/annotations?databases=";
 //		        for (int k = 0;k<pathways.length;k++) {
 //		        	String newName = resources[i]+"_"+pathways[k];
 //		        	if (network.getDefaultNodeTable().getColumn(newName) == null) {

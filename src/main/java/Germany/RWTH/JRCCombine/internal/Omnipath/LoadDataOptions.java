@@ -61,7 +61,7 @@ public class LoadDataOptions {
 		// interactions query
 		if (database.equals("Signaling networks") || database.equals("miRNA-mRNA") || database.equals("TF-target interactions")) {
 			
-			query = "http://omnipathdb.org/interactions?fields=sources&fields=references&genesymbols=1";
+			query = "https://omnipathdb.org/interactions?fields=sources&fields=references&genesymbols=1";
 			//add extra text if it is TF query
 			if (database.equals("TF-target interactions")) {
 				
@@ -79,7 +79,7 @@ public class LoadDataOptions {
 		//ptms query
 		else {
 			
-			query = "http://omnipathdb.org/ptms/?fields=sources&fields=references&genesymbols=1";
+			query = "https://omnipathdb.org/ptms/?fields=sources&fields=references&genesymbols=1";
 			
 		}
 		
