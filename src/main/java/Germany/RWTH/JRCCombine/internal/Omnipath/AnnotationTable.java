@@ -327,7 +327,7 @@ public class AnnotationTable extends JPanel implements ActionListener {
 		        1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
 		        EMPTY_INSETS, 0, 0));
 	    
-	    addButton.addActionListener(new AddListener());
+	    addButton.addActionListener(new addListener());
 	    selectAll.addActionListener(new selectActionListener());
 	    deselectAll.addActionListener(new deselectActionListener());
 	    
@@ -337,7 +337,7 @@ public class AnnotationTable extends JPanel implements ActionListener {
 	        GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
 	            0, 5, 0, 5), 0, 0));
 	    
-	    removeButton.addActionListener(new RemoveListener());
+	    removeButton.addActionListener(new removeListener());
 	   
 
 
@@ -412,7 +412,7 @@ public class AnnotationTable extends JPanel implements ActionListener {
 	  
 	  
 	  
-private class AddListener implements ActionListener  {
+private class addListener implements ActionListener  {
 	public void actionPerformed(ActionEvent e){
 		if (!sourceList.isSelectionEmpty()) {
 			
@@ -459,7 +459,7 @@ private class AddListener implements ActionListener  {
 }
 
 
-private class RemoveListener implements ActionListener {
+private class removeListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		if (!destList.isSelectionEmpty()) {
