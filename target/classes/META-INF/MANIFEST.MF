@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Created-By: Apache Maven Bundle Plugin
 Tool: Bnd-1.15.0
-Bnd-LastModified: 1596737416489
+Bnd-LastModified: 1599419428376
 Import-Package: javax.swing,javax.swing.border,javax.swing.event,javax.s
  wing.filechooser,org.cytoscape.app.swing;version="[3.1,4)",org.cytoscap
  e.application;version="[3.1,4)",org.cytoscape.application.swing;version
@@ -15,7 +15,7 @@ Import-Package: javax.swing,javax.swing.border,javax.swing.event,javax.s
 Bundle-Name: OmniPath
 Bundle-Activator: Germany.RWTH.JRCCombine.internal.Omnipath.CyActivator
 Bundle-SymbolicName: Germany.RWTH.JRCCombine.Omnipath
-Bundle-Version: 2.2
+Bundle-Version: 2.3
 Built-By: denes
-Build-Jdk: 11.0.7
+Build-Jdk: 11.0.8
 

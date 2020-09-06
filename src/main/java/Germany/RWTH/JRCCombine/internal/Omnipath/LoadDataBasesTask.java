@@ -57,6 +57,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    Map<Object,ArrayList<String>> multiMap = new HashMap<>();
 		    while ((inputLine = in.readLine()) != null) {
 		    	split = inputLine.split("\t");
+		    	if(split.length < 2) continue;
 		    	databases = split[1].split(";");
 		    	ArrayList<String> values = new ArrayList(Arrays.asList(databases));
 		    	multiMap.put(split[0], values);
@@ -94,6 +95,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		    Map<Object,ArrayList<String>> multiMap = new HashMap<>();
 		    while ((inputLine = in.readLine()) != null) {
 		    	split = inputLine.split("\t");
+		    	if(split.length < 2) continue;
 		    	databases = split[1].split(";");
 		    	ArrayList<String> values = new ArrayList(Arrays.asList(databases));
 		    	multiMap.put(split[0], values);
