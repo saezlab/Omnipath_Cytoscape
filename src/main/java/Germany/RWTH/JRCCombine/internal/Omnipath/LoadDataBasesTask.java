@@ -47,7 +47,7 @@ public class LoadDataBasesTask extends AbstractTask {
 		if (database.equals("Signaling networks") || database.equals("TF-target interactions") || database.equals("miRNA-mRNA")) {
 
 
-			URL oracle = new URL("https://omnipathdb.org/interactions/");
+			URL oracle = new URL("https://omnipathdb.org/databases/interactions/");
 		    BufferedReader in = new BufferedReader(
 		    new InputStreamReader(oracle.openStream()));
 		    in.readLine();
@@ -85,7 +85,7 @@ public class LoadDataBasesTask extends AbstractTask {
 
 		}else {
 
-			URL oracle = new URL("https://omnipathdb.org/enzsub/");
+			URL oracle = new URL("https://omnipathdb.org/databases/enzsub/");
 		    BufferedReader in = new BufferedReader(
 		    new InputStreamReader(oracle.openStream()));
 		    in.readLine();
